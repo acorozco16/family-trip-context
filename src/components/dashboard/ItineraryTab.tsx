@@ -1,8 +1,10 @@
 
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Clock, MapPin, Users, Star, Sparkles, Plus } from "lucide-react";
+import { Clock, MapPin, Users, Star, Sparkles } from "lucide-react";
+import AddActivityModal from "./AddActivityModal";
 
 interface Activity {
   name: string;
@@ -22,7 +24,13 @@ interface ItineraryTabProps {
   activities: Activity[];
 }
 
-const ItineraryTab = ({ activities }: ItineraryTabProps) => {
+const ItineraryTab = ({ activities: initialActivities }: ItineraryTabProps) => {
+  const [activities, setActivities] = useState(initialActivities);
+
+  const handleAddActivity = (newActivity: Activity) => {
+    setActivities(prev => [...prev, newActivity]);
+  };
+
   // Group activities by date
   const groupedActivities = activities.reduce((acc, activity) => {
     const date = activity.date;
@@ -60,10 +68,7 @@ const ItineraryTab = ({ activities }: ItineraryTabProps) => {
                 Personalized recommendations based on your family's preferences and needs
               </CardDescription>
             </div>
-            <Button variant="outline" size="sm">
-              <Plus className="w-4 h-4 mr-2" />
-              Add Activity
-            </Button>
+            <AddActivityModal onAddActivity={handleAddActivity} />
           </div>
         </CardHeader>
         <CardContent>
