@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Users, Plus, Trash2, Baby, Child, UserCheck } from "lucide-react";
+import { Users, Plus, Trash2, Baby, User, UserCheck } from "lucide-react";
 
 interface KidsProfilesStepProps {
   onNext: () => void;
@@ -52,7 +51,7 @@ export const KidsProfilesStep = ({ onNext, tripData, setTripData }: KidsProfiles
 
   const getAgeIcon = (age: number) => {
     if (age <= 2) return Baby;
-    if (age <= 12) return Child;
+    if (age <= 12) return User;
     return UserCheck;
   };
 
@@ -141,7 +140,7 @@ export const KidsProfilesStep = ({ onNext, tripData, setTripData }: KidsProfiles
           <div className="flex justify-between items-center">
             <div>
               <CardTitle className="flex items-center">
-                <Child className="w-5 h-5 text-green-600 mr-2" />
+                <User className="w-5 h-5 text-green-600 mr-2" />
                 Children's Profiles
               </CardTitle>
               <CardDescription>
@@ -157,7 +156,7 @@ export const KidsProfilesStep = ({ onNext, tripData, setTripData }: KidsProfiles
         <CardContent>
           {kids.length === 0 ? (
             <div className="text-center py-8">
-              <Child className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+              <User className="w-12 h-12 text-gray-300 mx-auto mb-4" />
               <p className="text-gray-500 mb-4">No children added yet</p>
               <Button onClick={addKid} className="bg-green-600 hover:bg-green-700">
                 <Plus className="w-4 h-4 mr-2" />
