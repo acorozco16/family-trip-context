@@ -2,6 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MessageCircle, Clock, Plus, Calendar } from "lucide-react";
+import AddActivityModal from "./AddActivityModal";
 
 interface LiveUpdatesSidebarProps {
   updates: Array<{
@@ -9,9 +10,20 @@ interface LiveUpdatesSidebarProps {
     user: string;
     message: string;
   }>;
+  onAddActivity?: (activity: any) => void;
 }
 
-const LiveUpdatesSidebar = ({ updates }: LiveUpdatesSidebarProps) => {
+const LiveUpdatesSidebar = ({ updates, onAddActivity }: LiveUpdatesSidebarProps) => {
+  const handleFamilyChat = () => {
+    // In a real app, this would open a chat interface
+    alert("Family Chat feature coming soon! This would open a real-time chat with your family members.");
+  };
+
+  const handleUpdateDates = () => {
+    // In a real app, this would open a date picker or trip planning interface
+    alert("Update Dates feature coming soon! This would allow you to modify your trip dates and automatically adjust all activities.");
+  };
+
   return (
     <div className="space-y-6">
       <Card>
@@ -42,15 +54,12 @@ const LiveUpdatesSidebar = ({ updates }: LiveUpdatesSidebarProps) => {
           <CardTitle className="text-lg">Quick Actions</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
-          <Button variant="outline" className="w-full justify-start">
-            <Plus className="w-4 h-4 mr-2" />
-            Add Activity
-          </Button>
-          <Button variant="outline" className="w-full justify-start">
+          <AddActivityModal onAddActivity={onAddActivity || (() => {})} />
+          <Button variant="outline" className="w-full justify-start" onClick={handleFamilyChat}>
             <MessageCircle className="w-4 h-4 mr-2" />
             Family Chat
           </Button>
-          <Button variant="outline" className="w-full justify-start">
+          <Button variant="outline" className="w-full justify-start" onClick={handleUpdateDates}>
             <Calendar className="w-4 h-4 mr-2" />
             Update Dates
           </Button>
