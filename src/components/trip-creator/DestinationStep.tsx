@@ -13,21 +13,23 @@ interface DestinationStepProps {
 }
 
 export const DestinationStep = ({ onNext, tripData, setTripData }: DestinationStepProps) => {
-  const [destination, setDestination] = useState(tripData.destination || "");
+  const [city, setCity] = useState(tripData.city || "");
+  const [country, setCountry] = useState(tripData.country || "");
   const [startDate, setStartDate] = useState(tripData.startDate || "");
   const [endDate, setEndDate] = useState(tripData.endDate || "");
 
   const handleNext = () => {
     setTripData({
       ...tripData,
-      destination,
+      city,
+      country,
       startDate,
       endDate
     });
     onNext();
   };
 
-  const isValid = destination && startDate && endDate;
+  const isValid = city && country && startDate && endDate;
 
   return (
     <div className="space-y-8">
@@ -52,15 +54,27 @@ export const DestinationStep = ({ onNext, tripData, setTripData }: DestinationSt
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div>
-              <Label htmlFor="destination">Destination</Label>
-              <Input
-                id="destination"
-                placeholder="e.g., Paris, France or Orlando, Florida"
-                value={destination}
-                onChange={(e) => setDestination(e.target.value)}
-                className="mt-1"
-              />
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="city">City</Label>
+                <Input
+                  id="city"
+                  placeholder="e.g., Paris, Orlando"
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                  className="mt-1"
+                />
+              </div>
+              <div>
+                <Label htmlFor="country">Country</Label>
+                <Input
+                  id="country"
+                  placeholder="e.g., France, United States"
+                  value={country}
+                  onChange={(e) => setCountry(e.target.value)}
+                  className="mt-1"
+                />
+              </div>
             </div>
             
             <div className="grid grid-cols-2 gap-4">
