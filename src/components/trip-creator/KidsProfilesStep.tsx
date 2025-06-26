@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -20,6 +21,50 @@ export const KidsProfilesStep = ({ onNext, tripData, setTripData }: KidsProfiles
   const [adults, setAdults] = useState(tripData.adults || [
     { name: "", email: "", role: "organizer", specialNeeds: "", interests: "", inviteStatus: "self", isConnection: false }
   ]);
+
+  // Mock connections data - in a real app, this would come from a database
+  const mockConnections = [
+    {
+      id: "1",
+      name: "Sarah Johnson",
+      email: "sarah@example.com",
+      type: "adult",
+      interests: "photography, hiking",
+      specialNeeds: ""
+    },
+    {
+      id: "2", 
+      name: "Mike Chen",
+      email: "mike@example.com",
+      type: "adult",
+      interests: "food, culture",
+      specialNeeds: ""
+    },
+    {
+      id: "3",
+      name: "Emma Smith",
+      type: "child",
+      age: "8",
+      interests: "animals, art",
+      specialNeeds: ""
+    },
+    {
+      id: "4",
+      name: "Lucas Brown",
+      type: "child", 
+      age: "12",
+      interests: "sports, video games",
+      specialNeeds: ""
+    }
+  ];
+
+  const availableAdultConnections = mockConnections.filter(
+    conn => conn.type === "adult" && !adults.some(existing => existing.id === conn.id)
+  );
+
+  const availableChildConnections = mockConnections.filter(
+    conn => conn.type === "child" && !kids.some(existing => existing.id === conn.id)
+  );
 
   const addKid = () => {
     setKids([...kids, { name: "", age: "", specialNeeds: "", interests: "", isConnection: false }]);
@@ -224,12 +269,6 @@ export const KidsProfilesStep = ({ onNext, tripData, setTripData }: KidsProfiles
         </TabsList>
 
         <TabsContent value="adults" className="space-y-6">
-          <ConnectionsSelector 
-            type="adult"
-            onAddConnection={addConnectionAsAdult}
-            existingConnections={adults.filter(adult => adult.isConnection)}
-          />
-          
           <Card>
             <CardHeader>
               <div className="flex justify-between items-center">
@@ -239,16 +278,48 @@ export const KidsProfilesStep = ({ onNext, tripData, setTripData }: KidsProfiles
                     Adult Profiles
                   </CardTitle>
                   <CardDescription>
-                    Add details for each adult traveler and send invitations
+                    Add from your connections or create new adult profiles
                   </CardDescription>
                 </div>
                 <Button onClick={addAdult} variant="outline" size="sm">
                   <Plus className="w-4 h-4 mr-2" />
-                  Add Adult
+                  Add New Adult
                 </Button>
               </div>
             </CardHeader>
-            <CardContent>
+            <CardContent className="space-y-6">
+              {/* Quick Add from Connections */}
+              {availableAdultConnections.length > 0 && (
+                <div className="border-b pb-6">
+                  <h4 className="font-medium text-gray-900 mb-3">Quick Add from Connections</h4>
+                  <div className="grid md:grid-cols-2 gap-3">
+                    {availableAdultConnections.map((connection) => (
+                      <div key={connection.id} className="flex items-center justify-between p-3 border rounded-lg bg-gray-50">
+                        <div className="flex items-center space-x-3">
+                          <UserCheck className="w-4 h-4 text-blue-600" />
+                          <div>
+                            <p className="font-medium text-sm">{connection.name}</p>
+                            {connection.email && (
+                              <p className="text-xs text-gray-500">{connection.email}</p>
+                            )}
+                          </div>
+                        </div>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => addConnectionAsAdult(connection)}
+                          className="bg-green-50 hover:bg-green-100 text-green-700 border-green-200"
+                        >
+                          <Plus className="w-4 h-4 mr-1" />
+                          Add
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Adult Profiles */}
               <div className="space-y-6">
                 {adults.map((adult: any, index: number) => (
                   <div key={index} className="border rounded-lg p-6">
@@ -344,12 +415,6 @@ export const KidsProfilesStep = ({ onNext, tripData, setTripData }: KidsProfiles
         </TabsContent>
 
         <TabsContent value="children" className="space-y-6">
-          <ConnectionsSelector 
-            type="child"
-            onAddConnection={addConnectionAsChild}
-            existingConnections={kids.filter(kid => kid.isConnection)}
-          />
-
           <Card>
             <CardHeader>
               <div className="flex justify-between items-center">
@@ -359,16 +424,49 @@ export const KidsProfilesStep = ({ onNext, tripData, setTripData }: KidsProfiles
                     Children's Profiles
                   </CardTitle>
                   <CardDescription>
-                    Add details for each child to get personalized recommendations
+                    Add from your connections or create new children profiles
                   </CardDescription>
                 </div>
                 <Button onClick={addKid} variant="outline" size="sm">
                   <Plus className="w-4 h-4 mr-2" />
-                  Add Child
+                  Add New Child
                 </Button>
               </div>
             </CardHeader>
-            <CardContent>
+            <CardContent className="space-y-6">
+              {/* Quick Add from Connections */}
+              {availableChildConnections.length > 0 && (
+                <div className="border-b pb-6">
+                  <h4 className="font-medium text-gray-900 mb-3">Quick Add from Connections</h4>
+                  <div className="grid md:grid-cols-2 gap-3">
+                    {availableChildConnections.map((connection) => (
+                      <div key={connection.id} className="flex items-center justify-between p-3 border rounded-lg bg-gray-50">
+                        <div className="flex items-center space-x-3">
+                          <User className="w-4 h-4 text-blue-600" />
+                          <div>
+                            <p className="font-medium text-sm">{connection.name}</p>
+                            {connection.age && (
+                              <Badge className="bg-blue-100 text-blue-700 text-xs mt-1">
+                                Age {connection.age}
+                              </Badge>
+                            )}
+                          </div>
+                        </div>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => addConnectionAsChild(connection)}
+                          className="bg-green-50 hover:bg-green-100 text-green-700 border-green-200"
+                        >
+                          <Plus className="w-4 h-4 mr-1" />
+                          Add
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {kids.length === 0 ? (
                 <div className="text-center py-8">
                   <User className="w-12 h-12 text-gray-300 mx-auto mb-4" />
