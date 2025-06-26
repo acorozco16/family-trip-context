@@ -56,9 +56,45 @@ const Dashboard = () => {
       ]
     },
     activities: [
-      { name: "Sagrada Familia Tour", date: "July 16", status: "Booked" },
-      { name: "Park Güell", date: "July 17", status: "Planned" },
-      { name: "Barcelona Beach Day", date: "July 18", status: "Planned" }
+      { 
+        name: "Sagrada Familia Tour", 
+        date: "July 16", 
+        status: "Booked",
+        time: "10:00 AM",
+        duration: "2 hours",
+        location: "Sagrada Familia",
+        familyRating: 4.5,
+        ageRecommendation: "6+",
+        aiInsight: "Perfect timing to avoid crowds. Audio guide available in kids' version for Emma.",
+        cost: "€60 family ticket",
+        bookingRequired: true
+      },
+      { 
+        name: "Park Güell", 
+        date: "July 17", 
+        status: "Planned",
+        time: "9:00 AM",
+        duration: "3 hours",
+        location: "Park Güell",
+        familyRating: 4.8,
+        ageRecommendation: "All ages",
+        aiInsight: "Early morning visit recommended - cooler weather and better photos. Lots of walking, bring comfortable shoes.",
+        cost: "€35 family ticket",
+        bookingRequired: true
+      },
+      { 
+        name: "Barcelona Beach Day", 
+        date: "July 18", 
+        status: "Planned",
+        time: "11:00 AM",
+        duration: "4 hours",
+        location: "Barceloneta Beach",
+        familyRating: 4.2,
+        ageRecommendation: "All ages",
+        aiInsight: "Great for kids! Beach volleyball courts nearby for Jake. Remember sunscreen and early lunch.",
+        cost: "Free",
+        bookingRequired: false
+      }
     ],
     updates: [
       { time: "2 hours ago", user: "Sarah", message: "Added beach day to itinerary" },
