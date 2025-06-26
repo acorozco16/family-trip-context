@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Plane, Hotel, Car, Train, Phone, MapPin, Calendar, Users, CheckCircle } from "lucide-react";
 
 interface BookingsStepProps {
@@ -18,15 +18,61 @@ interface BookingsStepProps {
 
 export const BookingsStep = ({ onNext, tripData, setTripData }: BookingsStepProps) => {
   const [bookings, setBookings] = useState(tripData.bookings || {
-    flights: { outbound: "", return: "", airline: "", confirmation: "" },
+    flights: [],
     accommodations: [],
     transport: []
   });
 
-  const updateFlights = (field: string, value: string) => {
+  // Generate family members list for selection
+  const getFamilyMembers = () => {
+    const members = [];
+    
+    // Add adults
+    for (let i = 1; i <= (tripData.adults || 2); i++) {
+      members.push(`Adult ${i}`);
+    }
+    
+    // Add kids with their names if available
+    if (tripData.kids && tripData.kids.length > 0) {
+      tripData.kids.forEach((kid: any, index: number) => {
+        members.push(kid.name || `Child ${index + 1}`);
+      });
+    }
+    
+    return members;
+  };
+
+  const familyMembers = getFamilyMembers();
+
+  const addFlight = () => {
     setBookings({
       ...bookings,
-      flights: { ...bookings.flights, [field]: value }
+      flights: [
+        ...bookings.flights,
+        {
+          type: "outbound",
+          flightNumber: "",
+          airline: "",
+          departure: "",
+          arrival: "",
+          confirmation: "",
+          assignedTo: []
+        }
+      ]
+    });
+  };
+
+  const updateFlight = (index: number, field: string, value: any) => {
+    const updated = bookings.flights.map((flight: any, i: number) =>
+      i === index ? { ...flight, [field]: value } : flight
+    );
+    setBookings({ ...bookings, flights: updated });
+  };
+
+  const removeFlight = (index: number) => {
+    setBookings({
+      ...bookings,
+      flights: bookings.flights.filter((_: any, i: number) => i !== index)
     });
   };
 
@@ -41,13 +87,14 @@ export const BookingsStep = ({ onNext, tripData, setTripData }: BookingsStepProp
           checkIn: "",
           checkOut: "",
           confirmation: "",
-          address: ""
+          address: "",
+          assignedTo: []
         }
       ]
     });
   };
 
-  const updateAccommodation = (index: number, field: string, value: string) => {
+  const updateAccommodation = (index: number, field: string, value: any) => {
     const updated = bookings.accommodations.map((acc: any, i: number) =>
       i === index ? { ...acc, [field]: value } : acc
     );
@@ -70,13 +117,14 @@ export const BookingsStep = ({ onNext, tripData, setTripData }: BookingsStepProp
           type: "",
           provider: "",
           details: "",
-          confirmation: ""
+          confirmation: "",
+          assignedTo: []
         }
       ]
     });
   };
 
-  const updateTransport = (index: number, field: string, value: string) => {
+  const updateTransport = (index: number, field: string, value: any) => {
     const updated = bookings.transport.map((trans: any, i: number) =>
       i === index ? { ...trans, [field]: value } : trans
     );
@@ -88,6 +136,20 @@ export const BookingsStep = ({ onNext, tripData, setTripData }: BookingsStepProp
       ...bookings,
       transport: bookings.transport.filter((_: any, i: number) => i !== index)
     });
+  };
+
+  const handleMemberToggle = (bookingType: string, bookingIndex: number, member: string, checked: boolean) => {
+    const bookingArray = bookings[bookingType];
+    const updated = bookingArray.map((item: any, i: number) => {
+      if (i === bookingIndex) {
+        const assignedTo = checked
+          ? [...(item.assignedTo || []), member]
+          : (item.assignedTo || []).filter((m: string) => m !== member);
+        return { ...item, assignedTo };
+      }
+      return item;
+    });
+    setBookings({ ...bookings, [bookingType]: updated });
   };
 
   const handleNext = () => {
@@ -105,6 +167,40 @@ export const BookingsStep = ({ onNext, tripData, setTripData }: BookingsStepProp
     { value: "bus", label: "Bus/Coach", fields: ["route", "departure"] },
     { value: "private-transfer", label: "Private Transfer", fields: ["contact", "pickup"] }
   ];
+
+  const renderFamilyMemberSelector = (bookingType: string, bookingIndex: number, assignedTo: string[] = []) => (
+    <div>
+      <Label className="text-sm font-medium">Assigned to:</Label>
+      <div className="grid grid-cols-2 gap-2 mt-2">
+        {familyMembers.map((member) => (
+          <div key={member} className="flex items-center space-x-2">
+            <Checkbox
+              id={`${bookingType}-${bookingIndex}-${member}`}
+              checked={assignedTo.includes(member)}
+              onCheckedChange={(checked) => 
+                handleMemberToggle(bookingType, bookingIndex, member, checked as boolean)
+              }
+            />
+            <Label 
+              htmlFor={`${bookingType}-${bookingIndex}-${member}`}
+              className="text-sm font-normal"
+            >
+              {member}
+            </Label>
+          </div>
+        ))}
+      </div>
+      {assignedTo.length > 0 && (
+        <div className="flex flex-wrap gap-1 mt-2">
+          {assignedTo.map((member) => (
+            <Badge key={member} variant="secondary" className="text-xs">
+              {member}
+            </Badge>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 
   return (
     <div className="space-y-8">
@@ -134,68 +230,126 @@ export const BookingsStep = ({ onNext, tripData, setTripData }: BookingsStepProp
         </TabsList>
 
         <TabsContent value="flights" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <Plane className="w-5 h-5 text-blue-600 mr-2" />
-                Flight Information
-              </CardTitle>
-              <CardDescription>
-                Add your flight details for all family members
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <h4 className="font-medium">Outbound Flight</h4>
-                  <div>
-                    <Label htmlFor="outbound-flight">Flight Number & Time</Label>
-                    <Input
-                      id="outbound-flight"
-                      placeholder="e.g., AA 1234 - July 15, 8:30 AM"
-                      value={bookings.flights.outbound}
-                      onChange={(e) => updateFlights("outbound", e.target.value)}
-                      className="mt-1"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="airline">Airline</Label>
-                    <Input
-                      id="airline"
-                      placeholder="e.g., American Airlines"
-                      value={bookings.flights.airline}
-                      onChange={(e) => updateFlights("airline", e.target.value)}
-                      className="mt-1"
-                    />
-                  </div>
-                </div>
+          <div className="flex justify-between items-center">
+            <div>
+              <h3 className="text-xl font-semibold">Flight Information</h3>
+              <p className="text-gray-600">Add flights for your family members</p>
+            </div>
+            <Button onClick={addFlight} variant="outline">
+              <Plane className="w-4 h-4 mr-2" />
+              Add Flight
+            </Button>
+          </div>
 
-                <div className="space-y-4">
-                  <h4 className="font-medium">Return Flight</h4>
-                  <div>
-                    <Label htmlFor="return-flight">Flight Number & Time</Label>
-                    <Input
-                      id="return-flight"
-                      placeholder="e.g., AA 5678 - July 22, 6:15 PM"
-                      value={bookings.flights.return}
-                      onChange={(e) => updateFlights("return", e.target.value)}
-                      className="mt-1"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="flight-confirmation">Confirmation Number</Label>
-                    <Input
-                      id="flight-confirmation"
-                      placeholder="Booking reference"
-                      value={bookings.flights.confirmation}
-                      onChange={(e) => updateFlights("confirmation", e.target.value)}
-                      className="mt-1"
-                    />
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          {bookings.flights.length === 0 ? (
+            <Card>
+              <CardContent className="text-center py-8">
+                <Plane className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                <p className="text-gray-500 mb-4">No flights added yet</p>
+                <Button onClick={addFlight} className="bg-blue-600 hover:bg-blue-700">
+                  Add Your First Flight
+                </Button>
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="space-y-4">
+              {bookings.flights.map((flight: any, index: number) => (
+                <Card key={index}>
+                  <CardHeader className="pb-4">
+                    <div className="flex justify-between items-center">
+                      <CardTitle className="text-lg">Flight #{index + 1}</CardTitle>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => removeFlight(index)}
+                        className="text-red-600 hover:text-red-700"
+                      >
+                        Remove
+                      </Button>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor={`flight-type-${index}`}>Flight Type</Label>
+                        <Select
+                          value={flight.type}
+                          onValueChange={(value) => updateFlight(index, "type", value)}
+                        >
+                          <SelectTrigger className="mt-1">
+                            <SelectValue placeholder="Select type" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="outbound">Outbound</SelectItem>
+                            <SelectItem value="return">Return</SelectItem>
+                            <SelectItem value="connecting">Connecting</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div>
+                        <Label htmlFor={`flight-number-${index}`}>Flight Number</Label>
+                        <Input
+                          id={`flight-number-${index}`}
+                          placeholder="e.g., AA 1234"
+                          value={flight.flightNumber}
+                          onChange={(e) => updateFlight(index, "flightNumber", e.target.value)}
+                          className="mt-1"
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor={`airline-${index}`}>Airline</Label>
+                        <Input
+                          id={`airline-${index}`}
+                          placeholder="e.g., American Airlines"
+                          value={flight.airline}
+                          onChange={(e) => updateFlight(index, "airline", e.target.value)}
+                          className="mt-1"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor={`flight-confirmation-${index}`}>Confirmation Number</Label>
+                        <Input
+                          id={`flight-confirmation-${index}`}
+                          placeholder="Booking reference"
+                          value={flight.confirmation}
+                          onChange={(e) => updateFlight(index, "confirmation", e.target.value)}
+                          className="mt-1"
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor={`departure-${index}`}>Departure</Label>
+                        <Input
+                          id={`departure-${index}`}
+                          placeholder="Date, time & airport"
+                          value={flight.departure}
+                          onChange={(e) => updateFlight(index, "departure", e.target.value)}
+                          className="mt-1"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor={`arrival-${index}`}>Arrival</Label>
+                        <Input
+                          id={`arrival-${index}`}
+                          placeholder="Date, time & airport"
+                          value={flight.arrival}
+                          onChange={(e) => updateFlight(index, "arrival", e.target.value)}
+                          className="mt-1"
+                        />
+                      </div>
+                    </div>
+
+                    {renderFamilyMemberSelector("flights", index, flight.assignedTo)}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
         </TabsContent>
 
         <TabsContent value="stays" className="space-y-6">
@@ -444,7 +598,7 @@ export const BookingsStep = ({ onNext, tripData, setTripData }: BookingsStepProp
           <div className="grid md:grid-cols-3 gap-6">
             <div>
               <h4 className="font-medium mb-2">Destination</h4>
-              <p className="text-sm text-gray-600">{tripData.destination || "Not specified"}</p>
+              <p className="text-sm text-gray-600">{tripData.city}, {tripData.country}</p>
               <p className="text-sm text-gray-600">{tripData.startDate} to {tripData.endDate}</p>
             </div>
             <div>
@@ -458,8 +612,8 @@ export const BookingsStep = ({ onNext, tripData, setTripData }: BookingsStepProp
               <h4 className="font-medium mb-2">Bookings</h4>
               <div className="space-y-1">
                 <div className="flex items-center space-x-2">
-                  <div className={`w-2 h-2 rounded-full ${bookings.flights.outbound ? 'bg-green-500' : 'bg-gray-300'}`}></div>
-                  <span className="text-sm text-gray-600">Flights {bookings.flights.outbound ? 'added' : 'pending'}</span>
+                  <div className={`w-2 h-2 rounded-full ${bookings.flights.length > 0 ? 'bg-green-500' : 'bg-gray-300'}`}></div>
+                  <span className="text-sm text-gray-600">{bookings.flights.length} flights added</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <div className={`w-2 h-2 rounded-full ${bookings.accommodations.length > 0 ? 'bg-green-500' : 'bg-gray-300'}`}></div>
