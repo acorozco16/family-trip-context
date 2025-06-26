@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Users, Plus, Trash2, Baby, User, UserCheck, Mail, Send } from "lucide-react";
+import { ConnectionsSelector } from "./ConnectionsSelector";
 
 interface KidsProfilesStepProps {
   onNext: () => void;
@@ -18,11 +18,11 @@ interface KidsProfilesStepProps {
 export const KidsProfilesStep = ({ onNext, tripData, setTripData }: KidsProfilesStepProps) => {
   const [kids, setKids] = useState(tripData.kids || []);
   const [adults, setAdults] = useState(tripData.adults || [
-    { name: "", email: "", role: "organizer", specialNeeds: "", interests: "", inviteStatus: "self" }
+    { name: "", email: "", role: "organizer", specialNeeds: "", interests: "", inviteStatus: "self", isConnection: false }
   ]);
 
   const addKid = () => {
-    setKids([...kids, { name: "", age: "", specialNeeds: "", interests: "" }]);
+    setKids([...kids, { name: "", age: "", specialNeeds: "", interests: "", isConnection: false }]);
   };
 
   const removeKid = (index: number) => {
@@ -43,7 +43,8 @@ export const KidsProfilesStep = ({ onNext, tripData, setTripData }: KidsProfiles
       role: "traveler", 
       specialNeeds: "", 
       interests: "", 
-      inviteStatus: "pending" 
+      inviteStatus: "pending",
+      isConnection: false
     }]);
   };
 
@@ -58,6 +59,30 @@ export const KidsProfilesStep = ({ onNext, tripData, setTripData }: KidsProfiles
       i === index ? { ...adult, [field]: value } : adult
     );
     setAdults(updatedAdults);
+  };
+
+  const addConnectionAsAdult = (connection: any) => {
+    setAdults([...adults, {
+      id: connection.id,
+      name: connection.name,
+      email: connection.email || "",
+      role: "traveler",
+      specialNeeds: connection.specialNeeds || "",
+      interests: connection.interests || "",
+      inviteStatus: "connected",
+      isConnection: true
+    }]);
+  };
+
+  const addConnectionAsChild = (connection: any) => {
+    setKids([...kids, {
+      id: connection.id,
+      name: connection.name,
+      age: connection.age || "",
+      specialNeeds: connection.specialNeeds || "",
+      interests: connection.interests || "",
+      isConnection: true
+    }]);
   };
 
   const sendInvite = (index: number) => {
@@ -100,6 +125,8 @@ export const KidsProfilesStep = ({ onNext, tripData, setTripData }: KidsProfiles
         return <Badge className="bg-blue-100 text-blue-700">Invited</Badge>;
       case "accepted":
         return <Badge className="bg-green-100 text-green-700">Accepted</Badge>;
+      case "connected":
+        return <Badge className="bg-purple-100 text-purple-700">Connected</Badge>;
       case "pending":
         return <Badge className="bg-gray-100 text-gray-700">Pending</Badge>;
       default:
@@ -138,6 +165,9 @@ export const KidsProfilesStep = ({ onNext, tripData, setTripData }: KidsProfiles
                     <div className="flex items-center space-x-2">
                       <UserCheck className="w-4 h-4 text-blue-600" />
                       <span className="text-sm">{adult.name || `Adult ${index + 1}`}</span>
+                      {adult.isConnection && (
+                        <Badge className="bg-purple-100 text-purple-700 text-xs">Connected</Badge>
+                      )}
                     </div>
                     {getInviteStatusBadge(adult.inviteStatus)}
                   </div>
@@ -168,6 +198,7 @@ export const KidsProfilesStep = ({ onNext, tripData, setTripData }: KidsProfiles
                     <Badge key={index} className="bg-orange-100 text-orange-700 flex items-center">
                       <AgeIcon className="w-3 h-3 mr-1" />
                       {kid.name || `Child ${index + 1}`} ({kid.age || '?'})
+                      {kid.isConnection && <span className="ml-1 text-xs">★</span>}
                     </Badge>
                   );
                 })}
@@ -193,6 +224,12 @@ export const KidsProfilesStep = ({ onNext, tripData, setTripData }: KidsProfiles
         </TabsList>
 
         <TabsContent value="adults" className="space-y-6">
+          <ConnectionsSelector 
+            type="adult"
+            onAddConnection={addConnectionAsAdult}
+            existingConnections={adults.filter(adult => adult.isConnection)}
+          />
+          
           <Card>
             <CardHeader>
               <div className="flex justify-between items-center">
@@ -222,6 +259,9 @@ export const KidsProfilesStep = ({ onNext, tripData, setTripData }: KidsProfiles
                           {index === 0 ? "Trip Organizer" : `Adult ${index + 1}`}
                         </h4>
                         {getInviteStatusBadge(adult.inviteStatus)}
+                        {adult.isConnection && (
+                          <Badge className="bg-purple-100 text-purple-700">From Connections</Badge>
+                        )}
                       </div>
                       {index > 0 && (
                         <Button
@@ -244,6 +284,7 @@ export const KidsProfilesStep = ({ onNext, tripData, setTripData }: KidsProfiles
                           value={adult.name}
                           onChange={(e) => updateAdult(index, "name", e.target.value)}
                           className="mt-1"
+                          disabled={adult.isConnection}
                         />
                       </div>
                       <div>
@@ -256,9 +297,9 @@ export const KidsProfilesStep = ({ onNext, tripData, setTripData }: KidsProfiles
                             value={adult.email}
                             onChange={(e) => updateAdult(index, "email", e.target.value)}
                             className="flex-1"
-                            disabled={index === 0}
+                            disabled={index === 0 || adult.isConnection}
                           />
-                          {index > 0 && adult.email && adult.inviteStatus === "pending" && (
+                          {index > 0 && adult.email && adult.inviteStatus === "pending" && !adult.isConnection && (
                             <Button
                               onClick={() => sendInvite(index)}
                               size="sm"
@@ -279,6 +320,7 @@ export const KidsProfilesStep = ({ onNext, tripData, setTripData }: KidsProfiles
                         value={adult.interests}
                         onChange={(e) => updateAdult(index, "interests", e.target.value)}
                         className="mt-1"
+                        disabled={adult.isConnection}
                       />
                     </div>
                     
@@ -291,6 +333,7 @@ export const KidsProfilesStep = ({ onNext, tripData, setTripData }: KidsProfiles
                         onChange={(e) => updateAdult(index, "specialNeeds", e.target.value)}
                         className="mt-1"
                         rows={3}
+                        disabled={adult.isConnection}
                       />
                     </div>
                   </div>
@@ -301,6 +344,12 @@ export const KidsProfilesStep = ({ onNext, tripData, setTripData }: KidsProfiles
         </TabsContent>
 
         <TabsContent value="children" className="space-y-6">
+          <ConnectionsSelector 
+            type="child"
+            onAddConnection={addConnectionAsChild}
+            existingConnections={kids.filter(kid => kid.isConnection)}
+          />
+
           <Card>
             <CardHeader>
               <div className="flex justify-between items-center">
@@ -344,6 +393,9 @@ export const KidsProfilesStep = ({ onNext, tripData, setTripData }: KidsProfiles
                                 {getAgeGroup(parseInt(kid.age))}
                               </Badge>
                             )}
+                            {kid.isConnection && (
+                              <Badge className="bg-purple-100 text-purple-700">From Connections</Badge>
+                            )}
                           </div>
                           <Button
                             variant="ghost"
@@ -364,6 +416,7 @@ export const KidsProfilesStep = ({ onNext, tripData, setTripData }: KidsProfiles
                               value={kid.name}
                               onChange={(e) => updateKid(index, "name", e.target.value)}
                               className="mt-1"
+                              disabled={kid.isConnection}
                             />
                           </div>
                           <div>
@@ -377,6 +430,7 @@ export const KidsProfilesStep = ({ onNext, tripData, setTripData }: KidsProfiles
                               className="mt-1"
                               min="0"
                               max="18"
+                              disabled={kid.isConnection}
                             />
                           </div>
                         </div>
@@ -389,6 +443,7 @@ export const KidsProfilesStep = ({ onNext, tripData, setTripData }: KidsProfiles
                             value={kid.interests}
                             onChange={(e) => updateKid(index, "interests", e.target.value)}
                             className="mt-1"
+                            disabled={kid.isConnection}
                           />
                         </div>
                         
@@ -401,6 +456,7 @@ export const KidsProfilesStep = ({ onNext, tripData, setTripData }: KidsProfiles
                             onChange={(e) => updateKid(index, "specialNeeds", e.target.value)}
                             className="mt-1"
                             rows={3}
+                            disabled={kid.isConnection}
                           />
                         </div>
                       </div>
