@@ -30,6 +30,85 @@ const Dashboard = () => {
     }
   ];
 
+  // Mock trip data
+  const tripData = {
+    progress: 75,
+    bookings: {
+      flights: {
+        outbound: "NYC → Madrid, March 15th, 9:30 AM",
+        return: "Madrid → NYC, March 22nd, 2:15 PM",
+        status: "Confirmed"
+      },
+      accommodations: [
+        {
+          name: "Hotel Villa Magna",
+          dates: "March 15-18",
+          status: "Confirmed",
+          type: "Family Suite"
+        },
+        {
+          name: "Madrid Central Apartment",
+          dates: "March 18-22",
+          status: "Pending",
+          type: "2BR Apartment"
+        }
+      ],
+      transport: [
+        {
+          type: "Rental Car",
+          provider: "Hertz",
+          pickup: "Madrid Airport",
+          dates: "March 15-22",
+          status: "Reserved"
+        }
+      ]
+    }
+  };
+
+  // Mock activities data
+  const activitiesData = [
+    {
+      name: "Prado Museum",
+      date: "Monday, March 16th",
+      status: "Booked",
+      time: "10:00 AM",
+      duration: "2-3 hours",
+      location: "Paseo del Prado",
+      familyRating: 4,
+      ageRecommendation: "8+",
+      aiInsight: "Perfect timing - the museum is less crowded in the morning, and Emma will love the art workshops for kids!",
+      cost: "€48 for family",
+      bookingRequired: true
+    },
+    {
+      name: "Flamenco Show",
+      date: "Tuesday, March 17th",
+      status: "Planned",
+      time: "8:00 PM",
+      duration: "1.5 hours",
+      location: "Corral de la Morería",
+      familyRating: 5,
+      ageRecommendation: "All ages",
+      aiInsight: "This authentic flamenco venue offers special family seating and Jake will be amazed by the guitar work!",
+      cost: "€120 for family",
+      bookingRequired: true
+    }
+  ];
+
+  // Mock kids data
+  const kidsData = [
+    {
+      name: "Emma",
+      age: 8,
+      interests: "Art, animals, and interactive experiences"
+    },
+    {
+      name: "Jake", 
+      age: 12,
+      needs: "Loves sports, especially soccer, and outdoor activities"
+    }
+  ];
+
   const handleAddActivity = (activity: any) => {
     // In a real app, this would update the activities in your data store
     console.log("New activity added:", activity);
@@ -54,19 +133,19 @@ const Dashboard = () => {
               </TabsList>
               
               <TabsContent value="overview">
-                <OverviewTab />
+                <OverviewTab trip={tripData} />
               </TabsContent>
               
               <TabsContent value="itinerary">
-                <ItineraryTab />
+                <ItineraryTab activities={activitiesData} />
               </TabsContent>
               
               <TabsContent value="bookings">
-                <BookingsTab />
+                <BookingsTab trip={tripData} />
               </TabsContent>
               
               <TabsContent value="family">
-                <FamilyTab />
+                <FamilyTab kids={kidsData} />
               </TabsContent>
             </Tabs>
           </div>
