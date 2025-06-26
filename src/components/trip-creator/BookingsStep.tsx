@@ -473,6 +473,8 @@ export const BookingsStep = ({ onNext, tripData, setTripData }: BookingsStepProp
                         className="mt-1"
                       />
                     </div>
+
+                    {renderFamilyMemberSelector("accommodations", index, acc.assignedTo)}
                   </CardContent>
                 </Card>
               ))}
@@ -583,6 +585,8 @@ export const BookingsStep = ({ onNext, tripData, setTripData }: BookingsStepProp
                         className="mt-1"
                       />
                     </div>
+
+                    {renderFamilyMemberSelector("transport", index, trans.assignedTo)}
                   </CardContent>
                 </Card>
               ))}
