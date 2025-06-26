@@ -27,9 +27,14 @@ export const BookingsStep = ({ onNext, tripData, setTripData }: BookingsStepProp
   const getFamilyMembers = () => {
     const members = [];
     
-    // Add adults
-    for (let i = 1; i <= (tripData.adults || 2); i++) {
-      members.push(`Adult ${i}`);
+    // Add adults with their names if available
+    if (tripData.adults && tripData.adults.length > 0) {
+      tripData.adults.forEach((adult: any, index: number) => {
+        members.push(adult.name || `Adult ${index + 1}`);
+      });
+    } else {
+      // Fallback to default adults
+      members.push("Adult 1", "Adult 2");
     }
     
     // Add kids with their names if available
