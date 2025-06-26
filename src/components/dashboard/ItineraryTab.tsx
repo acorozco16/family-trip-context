@@ -1,5 +1,5 @@
-
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -26,9 +26,16 @@ interface ItineraryTabProps {
 
 const ItineraryTab = ({ activities: initialActivities }: ItineraryTabProps) => {
   const [activities, setActivities] = useState(initialActivities);
+  const navigate = useNavigate();
 
   const handleAddActivity = (newActivity: Activity) => {
     setActivities(prev => [...prev, newActivity]);
+  };
+
+  const handleActivityClick = (activityName: string) => {
+    // Convert activity name to URL-friendly ID
+    const activityId = activityName.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+    navigate(`/activity/${activityId}`);
   };
 
   // Group activities by date
@@ -78,11 +85,15 @@ const ItineraryTab = ({ activities: initialActivities }: ItineraryTabProps) => {
                 <h3 className="font-semibold text-lg mb-4 text-gray-900">{date}</h3>
                 <div className="space-y-4">
                   {dayActivities.map((activity, index) => (
-                    <div key={index} className="border rounded-lg p-4 bg-white shadow-sm">
+                    <div 
+                      key={index} 
+                      className="border rounded-lg p-4 bg-white shadow-sm cursor-pointer hover:shadow-md transition-shadow"
+                      onClick={() => handleActivityClick(activity.name)}
+                    >
                       <div className="flex items-start justify-between mb-3">
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-2">
-                            <h4 className="font-medium text-gray-900">{activity.name}</h4>
+                            <h4 className="font-medium text-gray-900 hover:text-purple-600 transition-colors">{activity.name}</h4>
                             <Badge className={getStatusColor(activity.status)}>
                               {activity.status}
                             </Badge>
@@ -130,7 +141,14 @@ const ItineraryTab = ({ activities: initialActivities }: ItineraryTabProps) => {
                             <p className="text-sm font-medium text-gray-900 mb-1">{activity.cost}</p>
                           )}
                           {activity.bookingRequired && activity.status !== "Booked" && (
-                            <Button size="sm" variant="outline">
+                            <Button 
+                              size="sm" 
+                              variant="outline"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                // Handle booking logic here
+                              }}
+                            >
                               Book Now
                             </Button>
                           )}
