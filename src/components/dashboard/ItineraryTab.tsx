@@ -150,8 +150,8 @@ const ItineraryTab = ({ activities }: ItineraryTabProps) => {
             <div className="p-3 border border-dashed border-purple-300 rounded-lg bg-purple-50">
               <div className="flex items-start justify-between">
                 <div>
-                  <p className="font-medium text-purple-900">Aquarium Barcelona</p>
-                  <p className="text-sm text-purple-700">Perfect for Emma's age group, indoor activity for hot weather</p>
+                  <p className="font-medium text-purple-900">Madrid Zoo Aquarium</p>
+                  <p className="text-sm text-purple-700">Perfect for Emma's age group, great for a hot afternoon with indoor and outdoor areas</p>
                 </div>
                 <Button size="sm" variant="outline" className="border-purple-300 text-purple-700">
                   Add to Itinerary
@@ -161,8 +161,8 @@ const ItineraryTab = ({ activities }: ItineraryTabProps) => {
             <div className="p-3 border border-dashed border-purple-300 rounded-lg bg-purple-50">
               <div className="flex items-start justify-between">
                 <div>
-                  <p className="font-medium text-purple-900">FC Barcelona Stadium Tour</p>
-                  <p className="text-sm text-purple-700">Jake loves soccer - this would be perfect for him!</p>
+                  <p className="font-medium text-purple-900">Santiago Bernabéu Stadium Tour</p>
+                  <p className="text-sm text-purple-700">Jake loves soccer - Real Madrid's legendary stadium would be amazing for him!</p>
                 </div>
                 <Button size="sm" variant="outline" className="border-purple-300 text-purple-700">
                   Add to Itinerary
