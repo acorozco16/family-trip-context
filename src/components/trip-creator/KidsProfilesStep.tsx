@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,9 +17,7 @@ interface KidsProfilesStepProps {
 
 export const KidsProfilesStep = ({ onNext, tripData, setTripData }: KidsProfilesStepProps) => {
   const [kids, setKids] = useState(tripData.kids || []);
-  const [adults, setAdults] = useState(tripData.adults || [
-    { name: "", email: "", role: "organizer", specialNeeds: "", interests: "", inviteStatus: "self", isConnection: false }
-  ]);
+  const [adults, setAdults] = useState(tripData.adults || []);
 
   // Mock connections data - in a real app, this would come from a database
   const mockConnections = [
@@ -94,9 +91,7 @@ export const KidsProfilesStep = ({ onNext, tripData, setTripData }: KidsProfiles
   };
 
   const removeAdult = (index: number) => {
-    if (adults.length > 1) { // Keep at least one adult (the organizer)
-      setAdults(adults.filter((_: any, i: number) => i !== index));
-    }
+    setAdults(adults.filter((_: any, i: number) => i !== index));
   };
 
   const updateAdult = (index: number, field: string, value: string) => {
@@ -271,21 +266,13 @@ export const KidsProfilesStep = ({ onNext, tripData, setTripData }: KidsProfiles
         <TabsContent value="adults" className="space-y-6">
           <Card>
             <CardHeader>
-              <div className="flex justify-between items-center">
-                <div>
-                  <CardTitle className="flex items-center">
-                    <UserCheck className="w-5 h-5 text-blue-600 mr-2" />
-                    Adult Profiles
-                  </CardTitle>
-                  <CardDescription>
-                    Add from your connections or create new adult profiles
-                  </CardDescription>
-                </div>
-                <Button onClick={addAdult} variant="outline" size="sm">
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add New Adult
-                </Button>
-              </div>
+              <CardTitle className="flex items-center">
+                <UserCheck className="w-5 h-5 text-blue-600 mr-2" />
+                Adult Profiles
+              </CardTitle>
+              <CardDescription>
+                Add from your connections or create new adult profiles
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               {/* Quick Add from Connections */}
@@ -319,22 +306,37 @@ export const KidsProfilesStep = ({ onNext, tripData, setTripData }: KidsProfiles
                 </div>
               )}
 
-              {/* Adult Profiles */}
-              <div className="space-y-6">
-                {adults.map((adult: any, index: number) => (
-                  <div key={index} className="border rounded-lg p-6">
-                    <div className="flex justify-between items-start mb-4">
-                      <div className="flex items-center space-x-2">
-                        <UserCheck className="w-5 h-5 text-blue-600" />
-                        <h4 className="font-medium">
-                          {index === 0 ? "Trip Organizer" : `Adult ${index + 1}`}
-                        </h4>
-                        {getInviteStatusBadge(adult.inviteStatus)}
-                        {adult.isConnection && (
-                          <Badge className="bg-purple-100 text-purple-700">From Connections</Badge>
-                        )}
-                      </div>
-                      {index > 0 && (
+              {/* Create New Adult Profile Button */}
+              {adults.length === 0 ? (
+                <div className="text-center py-8">
+                  <UserCheck className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                  <p className="text-gray-500 mb-4">No adults added yet</p>
+                  <Button onClick={addAdult} className="bg-blue-600 hover:bg-blue-700">
+                    <Plus className="w-4 h-4 mr-2" />
+                    Create New Adult Profile
+                  </Button>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  <div className="text-center">
+                    <Button onClick={addAdult} variant="outline" className="bg-blue-50 hover:bg-blue-100 text-blue-700 border-blue-200">
+                      <Plus className="w-4 h-4 mr-2" />
+                      Create New Adult Profile
+                    </Button>
+                  </div>
+
+                  {/* Adult Profiles */}
+                  {adults.map((adult: any, index: number) => (
+                    <div key={index} className="border rounded-lg p-6">
+                      <div className="flex justify-between items-start mb-4">
+                        <div className="flex items-center space-x-2">
+                          <UserCheck className="w-5 h-5 text-blue-600" />
+                          <h4 className="font-medium">Adult {index + 1}</h4>
+                          {getInviteStatusBadge(adult.inviteStatus)}
+                          {adult.isConnection && (
+                            <Badge className="bg-purple-100 text-purple-700">From Connections</Badge>
+                          )}
+                        </div>
                         <Button
                           variant="ghost"
                           size="sm"
@@ -343,73 +345,73 @@ export const KidsProfilesStep = ({ onNext, tripData, setTripData }: KidsProfiles
                         >
                           <Trash2 className="w-4 h-4" />
                         </Button>
-                      )}
-                    </div>
-                    
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div>
-                        <Label htmlFor={`adult-name-${index}`}>Full Name</Label>
+                      </div>
+                      
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor={`adult-name-${index}`}>Full Name</Label>
+                          <Input
+                            id={`adult-name-${index}`}
+                            placeholder="Adult's full name"
+                            value={adult.name}
+                            onChange={(e) => updateAdult(index, "name", e.target.value)}
+                            className="mt-1"
+                            disabled={adult.isConnection}
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor={`adult-email-${index}`}>Email Address</Label>
+                          <div className="flex mt-1">
+                            <Input
+                              id={`adult-email-${index}`}
+                              type="email"
+                              placeholder="email@example.com"
+                              value={adult.email}
+                              onChange={(e) => updateAdult(index, "email", e.target.value)}
+                              className="flex-1"
+                              disabled={adult.isConnection}
+                            />
+                            {adult.email && adult.inviteStatus === "pending" && !adult.isConnection && (
+                              <Button
+                                onClick={() => sendInvite(index)}
+                                size="sm"
+                                className="ml-2 bg-blue-600 hover:bg-blue-700"
+                              >
+                                <Send className="w-4 h-4" />
+                              </Button>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="mt-4">
+                        <Label htmlFor={`adult-interests-${index}`}>Interests & Preferences</Label>
                         <Input
-                          id={`adult-name-${index}`}
-                          placeholder="Adult's full name"
-                          value={adult.name}
-                          onChange={(e) => updateAdult(index, "name", e.target.value)}
+                          id={`adult-interests-${index}`}
+                          placeholder="e.g., history, food, adventure, relaxation"
+                          value={adult.interests}
+                          onChange={(e) => updateAdult(index, "interests", e.target.value)}
                           className="mt-1"
                           disabled={adult.isConnection}
                         />
                       </div>
-                      <div>
-                        <Label htmlFor={`adult-email-${index}`}>Email Address</Label>
-                        <div className="flex mt-1">
-                          <Input
-                            id={`adult-email-${index}`}
-                            type="email"
-                            placeholder="email@example.com"
-                            value={adult.email}
-                            onChange={(e) => updateAdult(index, "email", e.target.value)}
-                            className="flex-1"
-                            disabled={index === 0 || adult.isConnection}
-                          />
-                          {index > 0 && adult.email && adult.inviteStatus === "pending" && !adult.isConnection && (
-                            <Button
-                              onClick={() => sendInvite(index)}
-                              size="sm"
-                              className="ml-2 bg-blue-600 hover:bg-blue-700"
-                            >
-                              <Send className="w-4 h-4" />
-                            </Button>
-                          )}
-                        </div>
+                      
+                      <div className="mt-4">
+                        <Label htmlFor={`adult-needs-${index}`}>Special Needs & Considerations</Label>
+                        <Textarea
+                          id={`adult-needs-${index}`}
+                          placeholder="e.g., dietary restrictions, mobility needs, accessibility requirements"
+                          value={adult.specialNeeds}
+                          onChange={(e) => updateAdult(index, "specialNeeds", e.target.value)}
+                          className="mt-1"
+                          rows={3}
+                          disabled={adult.isConnection}
+                        />
                       </div>
                     </div>
-                    
-                    <div className="mt-4">
-                      <Label htmlFor={`adult-interests-${index}`}>Interests & Preferences</Label>
-                      <Input
-                        id={`adult-interests-${index}`}
-                        placeholder="e.g., history, food, adventure, relaxation"
-                        value={adult.interests}
-                        onChange={(e) => updateAdult(index, "interests", e.target.value)}
-                        className="mt-1"
-                        disabled={adult.isConnection}
-                      />
-                    </div>
-                    
-                    <div className="mt-4">
-                      <Label htmlFor={`adult-needs-${index}`}>Special Needs & Considerations</Label>
-                      <Textarea
-                        id={`adult-needs-${index}`}
-                        placeholder="e.g., dietary restrictions, mobility needs, accessibility requirements"
-                        value={adult.specialNeeds}
-                        onChange={(e) => updateAdult(index, "specialNeeds", e.target.value)}
-                        className="mt-1"
-                        rows={3}
-                        disabled={adult.isConnection}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
