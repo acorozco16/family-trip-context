@@ -1,11 +1,10 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, ArrowRight, MapPin, Calendar, Users, Heart, DollarSign, Plane } from "lucide-react";
+import { MapPin, Calendar, Users, Heart, DollarSign, Plane } from "lucide-react";
+import { TripHeader } from "@/components/trip-creator/TripHeader";
+import { StepIndicator } from "@/components/trip-creator/StepIndicator";
+import { StepNavigation } from "@/components/trip-creator/StepNavigation";
 import { DestinationStep } from "@/components/trip-creator/DestinationStep";
 import { KidsProfilesStep } from "@/components/trip-creator/KidsProfilesStep";
 import { TravelStyleStep } from "@/components/trip-creator/TravelStyleStep";
@@ -26,8 +25,6 @@ const TripCreator = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [tripData, setTripData] = useState({});
-
-  const progress = (currentStep / steps.length) * 100;
 
   const handleNext = () => {
     if (currentStep < steps.length) {
@@ -66,101 +63,22 @@ const TripCreator = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-orange-50">
-      {/* Header */}
-      <header className="bg-white/80 backdrop-blur-sm border-b border-blue-100">
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-orange-500 rounded-lg flex items-center justify-center">
-              <Heart className="w-5 h-5 text-white" />
-            </div>
-            <span className="text-xl font-bold text-gray-900">FamilySync</span>
-          </div>
-          <Badge className="bg-blue-100 text-blue-700">
-            Step {currentStep} of {steps.length}
-          </Badge>
-        </div>
-      </header>
-
-      {/* Progress Bar */}
-      <div className="bg-white border-b border-gray-100">
-        <div className="container mx-auto px-6 py-4">
-          <div className="mb-4">
-            <div className="flex justify-between items-center mb-2">
-              <h2 className="text-lg font-semibold text-gray-900">
-                {steps[currentStep - 1].title}
-              </h2>
-              <span className="text-sm text-gray-500">
-                {Math.round(progress)}% Complete
-              </span>
-            </div>
-            <Progress value={progress} className="h-2" />
-          </div>
-          
-          {/* Step Indicators */}
-          <div className="flex justify-between">
-            {steps.map((step, index) => {
-              const StepIcon = step.icon;
-              const isActive = index + 1 === currentStep;
-              const isCompleted = index + 1 < currentStep;
-              
-              return (
-                <div key={step.id} className="flex flex-col items-center space-y-2">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${
-                    isActive 
-                      ? 'bg-blue-600 text-white' 
-                      : isCompleted 
-                        ? 'bg-green-500 text-white' 
-                        : 'bg-gray-200 text-gray-400'
-                  }`}>
-                    <StepIcon className="w-5 h-5" />
-                  </div>
-                  <div className="text-center">
-                    <p className={`text-sm font-medium ${isActive ? 'text-blue-600' : 'text-gray-500'}`}>
-                      {step.title}
-                    </p>
-                    <p className="text-xs text-gray-400 hidden sm:block">
-                      {step.description}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-
+      <TripHeader currentStep={currentStep} totalSteps={steps.length} />
+      <StepIndicator steps={steps} currentStep={currentStep} />
+      
       {/* Main Content */}
-      <main className="container mx-auto px-6 py-8">
+      <main className="container mx-auto px-6 py-8 pb-24">
         <div className="max-w-4xl mx-auto">
           {renderStep()}
         </div>
       </main>
 
-      {/* Navigation */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4">
-        <div className="container mx-auto flex justify-between items-center max-w-4xl">
-          <Button 
-            variant="outline" 
-            onClick={handleBack}
-            className="flex items-center space-x-2"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>{currentStep === 1 ? "Back to Home" : "Previous"}</span>
-          </Button>
-          
-          <div className="text-sm text-gray-500">
-            Step {currentStep} of {steps.length}
-          </div>
-          
-          <Button 
-            onClick={handleNext}
-            className="bg-blue-600 hover:bg-blue-700 text-white flex items-center space-x-2"
-          >
-            <span>{currentStep === steps.length ? "Complete Trip" : "Next Step"}</span>
-            <ArrowRight className="w-4 h-4" />
-          </Button>
-        </div>
-      </div>
+      <StepNavigation 
+        currentStep={currentStep} 
+        totalSteps={steps.length}
+        onBack={handleBack}
+        onNext={handleNext}
+      />
     </div>
   );
 };

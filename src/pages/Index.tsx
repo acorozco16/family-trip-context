@@ -7,16 +7,11 @@ import { Badge } from "@/components/ui/badge";
 import { MapPin, Users, Calendar, Heart, Star, ArrowRight, Plane, Hotel, Car } from "lucide-react";
 
 const Index = () => {
-  console.log("Index component is rendering");
   const navigate = useNavigate();
   const [activeDemo, setActiveDemo] = useState("onboarding");
 
-  console.log("Navigate function:", navigate);
-  console.log("Active demo state:", activeDemo);
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-orange-50">
-      {console.log("Rendering Index page content")}
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-sm border-b border-blue-100 sticky top-0 z-50">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
@@ -29,19 +24,13 @@ const Index = () => {
           <div className="flex items-center space-x-4">
             <Button 
               variant="ghost" 
-              onClick={() => {
-                console.log("Dashboard button clicked");
-                navigate("/dashboard");
-              }}
+              onClick={() => navigate("/dashboard")}
               className="text-gray-600 hover:text-blue-600"
             >
               View Demo
             </Button>
             <Button 
-              onClick={() => {
-                console.log("Start Planning button clicked");
-                navigate("/trip-creator");
-              }}
+              onClick={() => navigate("/trip-creator")}
               className="bg-blue-600 hover:bg-blue-700 text-white"
             >
               Start Planning
