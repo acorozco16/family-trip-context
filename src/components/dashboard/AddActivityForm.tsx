@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,19 +10,20 @@ import { Sparkles, MapPin, Clock, Users, Euro, Tag } from "lucide-react";
 interface AddActivityFormProps {
   onSubmit: (activity: any) => void;
   onCancel: () => void;
+  initialData?: any;
 }
 
-const AddActivityForm = ({ onSubmit, onCancel }: AddActivityFormProps) => {
+const AddActivityForm = ({ onSubmit, onCancel, initialData }: AddActivityFormProps) => {
   const [formData, setFormData] = useState({
-    name: "",
-    date: "",
-    time: "",
-    duration: "",
-    location: "",
-    cost: "",
-    category: "",
-    participants: [] as string[],
-    bookingRequired: false
+    name: initialData?.name || "",
+    date: initialData?.date || "",
+    time: initialData?.time || "",
+    duration: initialData?.duration || "",
+    location: initialData?.location || "",
+    cost: initialData?.cost || "",
+    category: initialData?.category || "",
+    participants: initialData?.participants || [] as string[],
+    bookingRequired: initialData?.bookingRequired || false
   });
 
   const [aiSuggestions] = useState([
@@ -67,21 +67,22 @@ const AddActivityForm = ({ onSubmit, onCancel }: AddActivityFormProps) => {
   };
 
   const handleSubmit = () => {
-    const newActivity = {
+    const activityData = {
+      ...initialData,
       name: formData.name,
       date: formData.date,
-      status: "Planned",
+      status: initialData?.status || "Planned",
       time: formData.time,
       duration: formData.duration,
       location: formData.location,
-      familyRating: 4.0,
+      familyRating: initialData?.familyRating || 4.0,
       category: formData.category,
       participants: formData.participants,
-      aiInsight: `Great choice! This activity is perfect for families visiting Madrid. Make sure to check opening hours and consider booking in advance.`,
+      aiInsight: initialData?.aiInsight || `Great choice! This activity is perfect for families visiting Madrid. Make sure to check opening hours and consider booking in advance.`,
       cost: formData.cost,
       bookingRequired: formData.bookingRequired
     };
-    onSubmit(newActivity);
+    onSubmit(activityData);
   };
 
   const suggestActivity = (suggestion: string) => {
@@ -90,29 +91,31 @@ const AddActivityForm = ({ onSubmit, onCancel }: AddActivityFormProps) => {
 
   return (
     <div className="space-y-6">
-      {/* AI Suggestions */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center text-base">
-            <Sparkles className="w-4 h-4 text-purple-600 mr-2" />
-            AI Suggestions for Madrid
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-wrap gap-2">
-            {aiSuggestions.map((suggestion, index) => (
-              <Badge 
-                key={index}
-                variant="outline" 
-                className="cursor-pointer hover:bg-purple-50 border-purple-300"
-                onClick={() => suggestActivity(suggestion)}
-              >
-                {suggestion}
-              </Badge>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      {/* Only show AI Suggestions if this is a new activity */}
+      {!initialData && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center text-base">
+              <Sparkles className="w-4 h-4 text-purple-600 mr-2" />
+              AI Suggestions for Madrid
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-wrap gap-2">
+              {aiSuggestions.map((suggestion, index) => (
+                <Badge 
+                  key={index}
+                  variant="outline" 
+                  className="cursor-pointer hover:bg-purple-50 border-purple-300"
+                  onClick={() => suggestActivity(suggestion)}
+                >
+                  {suggestion}
+                </Badge>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Basic Information */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -283,7 +286,7 @@ const AddActivityForm = ({ onSubmit, onCancel }: AddActivityFormProps) => {
           onClick={handleSubmit}
           disabled={!formData.name || !formData.date}
         >
-          Add Activity
+          {initialData ? 'Update Activity' : 'Add Activity'}
         </Button>
       </div>
     </div>

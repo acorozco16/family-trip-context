@@ -1,9 +1,9 @@
-
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Clock, MapPin, Users, Star, Sparkles, Euro, Calendar, Edit } from "lucide-react";
+import { ArrowLeft, Clock, MapPin, Users, Star, Sparkles, Euro, Calendar } from "lucide-react";
+import EditActivityModal from "@/components/dashboard/EditActivityModal";
 
 const ActivityDetail = () => {
   const { id } = useParams();
@@ -65,6 +65,12 @@ const ActivityDetail = () => {
     jake: "Jake (12)"
   };
 
+  const handleActivityUpdate = (updatedActivity: any) => {
+    // In a real app, this would update the activity in your data store
+    console.log("Activity updated:", updatedActivity);
+    // You could show a toast notification here
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-6 py-8">
@@ -88,10 +94,7 @@ const ActivityDetail = () => {
                 </div>
               </div>
             </div>
-            <Button variant="outline">
-              <Edit className="w-4 h-4 mr-2" />
-              Edit Activity
-            </Button>
+            <EditActivityModal activity={activity} onUpdateActivity={handleActivityUpdate} />
           </div>
 
           <div className="grid lg:grid-cols-3 gap-6">
