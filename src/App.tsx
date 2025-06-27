@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -526,7 +525,10 @@ export default function App() {
                       Complete your trip details in the Planning tab to see your overview here!
                     </p>
                     <Button 
-                      onClick={() => document.querySelector('[value="planning"]')?.click()}
+                      onClick={() => {
+                        const planningTab = document.querySelector('[value="planning"]') as HTMLElement;
+                        planningTab?.click();
+                      }}
                       className="transition-all duration-200 hover:scale-105"
                     >
                       Start Planning
