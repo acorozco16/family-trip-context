@@ -15,7 +15,7 @@ export const TripHeader = ({ currentStep, totalSteps }: TripHeaderProps) => {
           <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-orange-500 rounded-lg flex items-center justify-center">
             <Heart className="w-5 h-5 text-white" />
           </div>
-          <span className="text-xl font-bold text-gray-900">FamilySync</span>
+          <span className="text-xl font-bold text-gray-900">Fam</span>
         </div>
         <Badge className="bg-blue-100 text-blue-700">
           Step {currentStep} of {totalSteps}

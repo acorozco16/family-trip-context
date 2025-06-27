@@ -15,7 +15,7 @@ const DashboardHeader = () => {
               <Home className="w-5 h-5 text-white" />
             </div>
             <div>
-              <span className="text-2xl font-bold text-blue-900">WanderNest</span>
+              <span className="text-2xl font-bold text-blue-900">Fam</span>
               <p className="text-xs text-blue-700 -mt-1">Family Travel Made Simple</p>
             </div>
           </div>

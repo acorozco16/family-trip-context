@@ -19,7 +19,7 @@ const Index = () => {
             <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-orange-500 rounded-lg flex items-center justify-center">
               <Heart className="w-5 h-5 text-white" />
             </div>
-            <span className="text-xl font-bold text-gray-900">FamilySync</span>
+            <span className="text-xl font-bold text-gray-900">Fam</span>
           </div>
           <div className="flex items-center space-x-4">
             <Button 
@@ -130,7 +130,7 @@ const Index = () => {
       <section className="container mx-auto px-6 py-16 bg-white/50 rounded-2xl mx-6">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            See FamilySync in Action
+            See Fam in Action
           </h2>
           <p className="text-lg text-gray-600">
             Explore our Barcelona family trip demo
@@ -226,7 +226,7 @@ const Index = () => {
             Ready to Plan Your Family Adventure?
           </h2>
           <p className="text-lg text-gray-600 mb-8">
-            Join families who've discovered stress-free travel planning with FamilySync
+            Join families who've discovered stress-free travel planning with Fam
           </p>
           <Button 
             size="lg" 
@@ -247,7 +247,7 @@ const Index = () => {
               <div className="w-6 h-6 bg-gradient-to-br from-blue-600 to-orange-500 rounded flex items-center justify-center">
                 <Heart className="w-4 h-4 text-white" />
               </div>
-              <span className="font-semibold text-gray-900">FamilySync</span>
+              <span className="font-semibold text-gray-900">Fam</span>
             </div>
             <p className="text-sm text-gray-600">
               Making family travel planning delightful, one trip at a time
