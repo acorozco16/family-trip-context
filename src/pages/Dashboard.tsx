@@ -118,18 +118,18 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-stone-100">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-pink-50 to-amber-50">
       <DashboardHeader />
       
       <div className="container mx-auto px-6 py-8">
         <div className="grid lg:grid-cols-4 gap-8">
           <div className="lg:col-span-3">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-              <TabsList className="grid w-full grid-cols-4 bg-white/80 backdrop-blur-sm border border-stone-200 shadow-sm">
-                <TabsTrigger value="overview" className="text-stone-700 data-[state=active]:bg-orange-100 data-[state=active]:text-orange-800">Overview</TabsTrigger>
-                <TabsTrigger value="itinerary" className="text-stone-700 data-[state=active]:bg-orange-100 data-[state=active]:text-orange-800">Itinerary</TabsTrigger>
-                <TabsTrigger value="bookings" className="text-stone-700 data-[state=active]:bg-orange-100 data-[state=active]:text-orange-800">Bookings</TabsTrigger>
-                <TabsTrigger value="family" className="text-stone-700 data-[state=active]:bg-orange-100 data-[state=active]:text-orange-800">Family</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-4 bg-white/80 backdrop-blur-sm border border-orange-200 shadow-sm">
+                <TabsTrigger value="overview" className="text-orange-700 data-[state=active]:bg-orange-100 data-[state=active]:text-orange-900">Overview</TabsTrigger>
+                <TabsTrigger value="itinerary" className="text-orange-700 data-[state=active]:bg-orange-100 data-[state=active]:text-orange-900">Itinerary</TabsTrigger>
+                <TabsTrigger value="bookings" className="text-orange-700 data-[state=active]:bg-orange-100 data-[state=active]:text-orange-900">Bookings</TabsTrigger>
+                <TabsTrigger value="family" className="text-orange-700 data-[state=active]:bg-orange-100 data-[state=active]:text-orange-900">Family</TabsTrigger>
               </TabsList>
               
               <TabsContent value="overview">
