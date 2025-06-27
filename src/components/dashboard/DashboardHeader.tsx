@@ -1,7 +1,7 @@
-
 import { Button } from "@/components/ui/button";
-import { Heart, Bell, Settings, Plus, Home } from "lucide-react";
+import { Bell, Settings, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { FamLogo } from "@/components/ui/fam-logo";
 
 const DashboardHeader = () => {
   const navigate = useNavigate();
@@ -11,11 +11,8 @@ const DashboardHeader = () => {
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-700 via-blue-600 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg">
-              <Home className="w-5 h-5 text-white" />
-            </div>
+            <FamLogo size="md" />
             <div>
-              <span className="text-2xl font-bold text-blue-900">Fam</span>
               <p className="text-xs text-blue-700 -mt-1">Family Travel Made Simple</p>
             </div>
           </div>
