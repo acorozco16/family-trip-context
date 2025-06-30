@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import AddPackingItemModal from '../components/AddPackingItemModal';
 
 export default function PackingList() {
   const { trip, loading, togglePackingItem } = useTrip();
@@ -31,8 +32,13 @@ export default function PackingList() {
   return (
     <div className="p-6">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Packing List</h1>
-        <p className="text-gray-600 mb-4">Keep track of what everyone needs to pack</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Packing List</h1>
+            <p className="text-gray-600 mb-4">Keep track of what everyone needs to pack</p>
+          </div>
+          <AddPackingItemModal />
+        </div>
         
         <Card className="mb-6">
           <CardContent className="pt-6">
@@ -98,7 +104,8 @@ export default function PackingList() {
           <CardContent>
             <div className="text-6xl mb-4">🎒</div>
             <h3 className="text-lg font-medium text-gray-900 mb-2">No packing items yet</h3>
-            <p className="text-gray-500">Start adding items to your family's packing list.</p>
+            <p className="text-gray-500 mb-4">Start adding items to your family's packing list.</p>
+            <AddPackingItemModal />
           </CardContent>
         </Card>
       )}
