@@ -4,9 +4,10 @@ import { useTrip } from '../context/TripContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, MapPin, Users, Clock } from 'lucide-react';
+import AddActivityModal from '@/components/dashboard/AddActivityModal';
 
 export default function Itinerary() {
-  const { trip, loading } = useTrip();
+  const { trip, loading, addItineraryItem } = useTrip();
 
   if (loading) {
     return <div className="p-6">Loading itinerary...</div>;
@@ -15,6 +16,41 @@ export default function Itinerary() {
   if (!trip) {
     return <div className="p-6">No trip data available.</div>;
   }
+
+  const handleAddActivity = (activityData: any) => {
+    const newItineraryItem = {
+      id: Date.now().toString(),
+      title: activityData.name,
+      description: activityData.aiInsight || `${activityData.name} activity`,
+      startTime: `${activityData.date}T${activityData.time || '09:00'}:00Z`,
+      endTime: `${activityData.date}T${calculateEndTime(activityData.time || '09:00', activityData.duration || '2 hours')}:00Z`,
+      location: {
+        id: Date.now().toString(),
+        name: activityData.location || 'TBD',
+        address: activityData.location || '',
+      },
+      participants: trip.participants.map(p => p.id),
+    };
+    
+    addItineraryItem(newItineraryItem);
+  };
+
+  const calculateEndTime = (startTime: string, duration: string) => {
+    const [hours, minutes] = startTime.split(':').map(Number);
+    let durationHours = 2;
+    
+    if (duration.includes('30 minutes')) durationHours = 0.5;
+    else if (duration.includes('1 hour')) durationHours = 1;
+    else if (duration.includes('1.5 hours')) durationHours = 1.5;
+    else if (duration.includes('3 hours')) durationHours = 3;
+    else if (duration.includes('Half day')) durationHours = 4;
+    else if (duration.includes('Full day')) durationHours = 8;
+    
+    const endHours = hours + Math.floor(durationHours);
+    const endMinutes = minutes + ((durationHours % 1) * 60);
+    
+    return `${String(endHours).padStart(2, '0')}:${String(endMinutes).padStart(2, '0')}`;
+  };
 
   const groupedItinerary = trip.itinerary.reduce((acc, item) => {
     const date = new Date(item.startTime).toDateString();
@@ -28,8 +64,13 @@ export default function Itinerary() {
   return (
     <div className="p-6">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Trip Itinerary</h1>
-        <p className="text-gray-600">Your family's planned activities and schedule</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Trip Itinerary</h1>
+            <p className="text-gray-600">Your family's planned activities and schedule</p>
+          </div>
+          <AddActivityModal onAddActivity={handleAddActivity} />
+        </div>
       </div>
 
       <div className="space-y-8">
@@ -91,7 +132,8 @@ export default function Itinerary() {
           <CardContent>
             <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-4" />
             <h3 className="text-lg font-medium text-gray-900 mb-2">No activities planned yet</h3>
-            <p className="text-gray-500">Start building your family itinerary by adding activities and events.</p>
+            <p className="text-gray-500 mb-4">Start building your family itinerary by adding activities and events.</p>
+            <AddActivityModal onAddActivity={handleAddActivity} />
           </CardContent>
         </Card>
       )}
