@@ -1,10 +1,9 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
-import { Calendar, MapPin, Users, Plus } from "lucide-react";
+import { Calendar, MapPin, Users } from "lucide-react";
 
 // Mock trips data
 const mockTrips = [
@@ -137,21 +136,6 @@ const Dashboard = () => {
               </CardContent>
             </Card>
           ))}
-
-          {/* Create New Trip Card */}
-          <Card className="hover:shadow-lg transition-shadow cursor-pointer bg-white/80 backdrop-blur-sm border border-blue-200 border-dashed">
-            <CardContent className="flex flex-col items-center justify-center h-full min-h-[400px] text-center">
-              <Plus className="h-12 w-12 text-blue-600 mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Create New Trip</h3>
-              <p className="text-gray-600 mb-6">Start planning your next family adventure</p>
-              <Button 
-                onClick={() => navigate('/trip-creator')}
-                className="bg-gradient-to-r from-blue-700 to-cyan-600 hover:from-blue-800 hover:to-cyan-700"
-              >
-                Get Started
-              </Button>
-            </CardContent>
-          </Card>
         </div>
       </div>
     </div>
