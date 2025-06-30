@@ -5,7 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import { Button } from '@/components/ui/button';
+import { Check, X } from 'lucide-react';
 import AddPackingItemModal from '../components/AddPackingItemModal';
+import EditPackingItemModal from '../components/EditPackingItemModal';
 
 export default function PackingList() {
   const { trip, loading, togglePackingItem } = useTrip();
@@ -90,6 +93,19 @@ export default function PackingList() {
                           {item.notes}
                         </div>
                       )}
+                    </div>
+                    <div className="flex items-center gap-1">
+                      {item.isPacked && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => togglePackingItem(item.id)}
+                          className="text-green-600 hover:text-green-700"
+                        >
+                          <Check className="h-4 w-4" />
+                        </Button>
+                      )}
+                      <EditPackingItemModal item={item} />
                     </div>
                   </div>
                 ))}
