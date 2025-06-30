@@ -51,6 +51,7 @@ export interface Photo {
 
 export interface ItineraryItem {
   id: string;
+  activityId?: string; // Add optional activityId for linking to activity details
   title: string;
   description: string;
   startTime: string;

@@ -1,5 +1,5 @@
-
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTrip } from '../context/TripContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -8,6 +8,7 @@ import AddActivityModal from '@/components/dashboard/AddActivityModal';
 
 export default function Itinerary() {
   const { trip, loading, addItineraryItem } = useTrip();
+  const navigate = useNavigate();
 
   if (loading) {
     return <div className="p-6">Loading itinerary...</div>;
@@ -18,8 +19,12 @@ export default function Itinerary() {
   }
 
   const handleAddActivity = (activityData: any) => {
+    // Generate a URL-friendly activity ID
+    const activityId = activityData.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+    
     const newItineraryItem = {
       id: Date.now().toString(),
+      activityId: activityId, // Store the activity ID for navigation
       title: activityData.name,
       description: activityData.aiInsight || `${activityData.name} activity`,
       startTime: `${activityData.date}T${activityData.time || '09:00'}:00Z`,
@@ -33,6 +38,12 @@ export default function Itinerary() {
     };
     
     addItineraryItem(newItineraryItem);
+  };
+
+  const handleActivityClick = (activity: any) => {
+    // Navigate to activity detail page using the activity ID
+    const activityId = activity.activityId || activity.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+    navigate(`/activity/${activityId}`);
   };
 
   const calculateEndTime = (startTime: string, duration: string) => {
@@ -90,10 +101,14 @@ export default function Itinerary() {
             
             <div className="space-y-4">
               {activities.map((activity) => (
-                <Card key={activity.id} className="hover:shadow-md transition-shadow">
+                <Card 
+                  key={activity.id} 
+                  className="hover:shadow-md transition-shadow cursor-pointer"
+                  onClick={() => handleActivityClick(activity)}
+                >
                   <CardHeader>
                     <div className="flex items-start justify-between">
-                      <CardTitle className="text-lg">{activity.title}</CardTitle>
+                      <CardTitle className="text-lg hover:text-blue-600 transition-colors">{activity.title}</CardTitle>
                       <Badge variant="outline">
                         <Clock className="h-3 w-3 mr-1" />
                         {new Date(activity.startTime).toLocaleTimeString('en-US', { 
