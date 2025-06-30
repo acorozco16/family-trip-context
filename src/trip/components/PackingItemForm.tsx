@@ -26,7 +26,7 @@ export default function PackingItemForm({
     name: item?.name || '',
     category: item?.category || '',
     quantity: item?.quantity || 1,
-    assignedTo: item?.assignedTo || '',
+    assignedTo: item?.assignedTo || 'unassigned',
     notes: item?.notes || ''
   });
 
@@ -48,7 +48,7 @@ export default function PackingItemForm({
       name: formData.name,
       category: formData.category || 'Other',
       quantity: formData.quantity,
-      assignedTo: formData.assignedTo || undefined,
+      assignedTo: formData.assignedTo === 'unassigned' ? undefined : formData.assignedTo,
       notes: formData.notes || undefined
     });
   };
@@ -101,7 +101,7 @@ export default function PackingItemForm({
               <SelectValue placeholder="Select person (optional)" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">No assignment</SelectItem>
+              <SelectItem value="unassigned">No assignment</SelectItem>
               {trip.participants.map(participant => (
                 <SelectItem key={participant.id} value={participant.name}>
                   {participant.name}
