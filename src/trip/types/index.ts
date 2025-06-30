@@ -59,6 +59,32 @@ export interface ItineraryItem {
   participants: string[];
 }
 
+export interface Accommodation {
+  id: string;
+  name: string;
+  type: string;
+  address: string;
+  checkIn: string;
+  checkOut: string;
+  status: 'confirmed' | 'pending' | 'cancelled';
+  cost?: number;
+  notes?: string;
+}
+
+export interface Travel {
+  id: string;
+  type: 'flight' | 'train' | 'bus' | 'car' | 'other';
+  provider: string;
+  from: string;
+  to: string;
+  departureTime: string;
+  arrivalTime?: string;
+  status: 'confirmed' | 'pending' | 'cancelled';
+  cost?: number;
+  confirmationNumber?: string;
+  notes?: string;
+}
+
 export interface Trip {
   id: string;
   name: string;
@@ -70,6 +96,8 @@ export interface Trip {
   packingList: Item[];
   photos: Photo[];
   itinerary: ItineraryItem[];
+  accommodations: Accommodation[];
+  travels: Travel[];
 }
 
 export interface TripContextType {
@@ -79,11 +107,20 @@ export interface TripContextType {
   updateTrip: (updates: Partial<Trip>) => void;
   addParticipant: (participant: Participant) => void;
   removeParticipant: (id: string) => void;
+  updateParticipant: (id: string, updates: Partial<Participant>) => void;
   addPackingItem: (item: Item) => void;
   removePackingItem: (id: string) => void;
+  updatePackingItem: (id: string, updates: Partial<Item>) => void;
   togglePackingItem: (id: string) => void;
   addItineraryItem: (item: ItineraryItem) => void;
   removeItineraryItem: (id: string) => void;
+  updateItineraryItem: (id: string, updates: Partial<ItineraryItem>) => void;
   addPhoto: (photo: Photo) => void;
   removePhoto: (id: string) => void;
+  addAccommodation: (accommodation: Accommodation) => void;
+  removeAccommodation: (id: string) => void;
+  updateAccommodation: (id: string, updates: Partial<Accommodation>) => void;
+  addTravel: (travel: Travel) => void;
+  removeTravel: (id: string) => void;
+  updateTravel: (id: string, updates: Partial<Travel>) => void;
 }

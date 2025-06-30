@@ -15,6 +15,9 @@ import Overview from "./trip/pages/Overview";
 import Itinerary from "./trip/pages/Itinerary";
 import PackingList from "./trip/pages/PackingList";
 import Gallery from "./trip/pages/Gallery";
+import FamilyMembers from "./trip/pages/FamilyMembers";
+import Accommodations from "./trip/pages/Accommodations";
+import TravelPage from "./trip/pages/Travel";
 
 const queryClient = new QueryClient();
 
@@ -49,6 +52,27 @@ const App = () => (
             <TripProvider>
               <Layout>
                 <PackingList />
+              </Layout>
+            </TripProvider>
+          } />
+          <Route path="/trip/family" element={
+            <TripProvider>
+              <Layout>
+                <FamilyMembers />
+              </Layout>
+            </TripProvider>
+          } />
+          <Route path="/trip/accommodations" element={
+            <TripProvider>
+              <Layout>
+                <Accommodations />
+              </Layout>
+            </TripProvider>
+          } />
+          <Route path="/trip/travel" element={
+            <TripProvider>
+              <Layout>
+                <TravelPage />
               </Layout>
             </TripProvider>
           } />

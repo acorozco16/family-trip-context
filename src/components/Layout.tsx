@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Card } from '@/components/ui/card';
-import { Users, Calendar, DollarSign, MapPin } from 'lucide-react';
+import { Users, Calendar, MapPin, Hotel, Plane, Camera } from 'lucide-react';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -14,8 +14,11 @@ export default function Layout({ children }: LayoutProps) {
   const navigation = [
     { name: 'Overview', href: '/trip', icon: MapPin },
     { name: 'Itinerary', href: '/trip/itinerary', icon: Calendar },
-    { name: 'Packing List', href: '/trip/packing', icon: Users },
-    { name: 'Gallery', href: '/trip/gallery', icon: DollarSign },
+    { name: 'Packing', href: '/trip/packing', icon: Users },
+    { name: 'Family', href: '/trip/family', icon: Users },
+    { name: 'Accommodations', href: '/trip/accommodations', icon: Hotel },
+    { name: 'Travel', href: '/trip/travel', icon: Plane },
+    { name: 'Gallery', href: '/trip/gallery', icon: Camera },
   ];
 
   const isActive = (href: string) => {
