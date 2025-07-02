@@ -1,9 +1,10 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Clock, MapPin, Users, Star, Sparkles } from "lucide-react";
+import { Clock, MapPin, Users, Star, Sparkles, AlertTriangle, CheckCircle, CloudRain } from "lucide-react";
 import AddActivityModal from "./AddActivityModal";
 
 interface Activity {
@@ -165,29 +166,69 @@ const ItineraryTab = ({ activities: initialActivities }: ItineraryTabProps) => {
       
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">AI Recommendations</CardTitle>
-          <CardDescription>Suggested activities based on your family profile</CardDescription>
+          <CardTitle className="text-lg flex items-center">
+            <Sparkles className="w-5 h-5 text-purple-600 mr-2" />
+            Smart Coordinator Assistance
+          </CardTitle>
+          <CardDescription>AI insights to help you manage family logistics seamlessly</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-3">
-            <div className="p-3 border border-dashed border-purple-300 rounded-lg bg-purple-50">
+          <div className="space-y-4">
+            <div className="p-4 border border-green-200 rounded-lg bg-green-50">
               <div className="flex items-start justify-between">
-                <div>
-                  <p className="font-medium text-purple-900">Madrid Zoo Aquarium</p>
-                  <p className="text-sm text-purple-700">Perfect for Emma's age group, great for a hot afternoon with indoor and outdoor areas</p>
+                <div className="flex items-start space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
+                  <div>
+                    <p className="font-medium text-green-900">Timing Conflict Avoided</p>
+                    <p className="text-sm text-green-700 mt-1">I moved your museum visit to 10 AM to avoid Emma's 2 PM nap time. This gives you a 3-hour window before lunch.</p>
+                  </div>
                 </div>
-                <Button size="sm" variant="outline" className="border-purple-300 text-purple-700">
-                  Add to Itinerary
+                <Button size="sm" variant="outline" className="border-green-300 text-green-700 hover:bg-green-100">
+                  View Changes
                 </Button>
               </div>
             </div>
-            <div className="p-3 border border-dashed border-purple-300 rounded-lg bg-purple-50">
+
+            <div className="p-4 border border-blue-200 rounded-lg bg-blue-50">
               <div className="flex items-start justify-between">
-                <div>
-                  <p className="font-medium text-purple-900">Santiago Bernabéu Stadium Tour</p>
-                  <p className="text-sm text-purple-700">Jake loves soccer - Real Madrid's legendary stadium would be amazing for him!</p>
+                <div className="flex items-start space-x-3">
+                  <Users className="w-5 h-5 text-blue-600 mt-0.5" />
+                  <div>
+                    <p className="font-medium text-blue-900">Grandparent-Friendly Alternative</p>
+                    <p className="text-sm text-blue-700 mt-1">Found wheelchair accessible restaurant "Casa Marta" 2 blocks away. Same cuisine, ramp access, and they have high chairs for the kids.</p>
+                  </div>
                 </div>
-                <Button size="sm" variant="outline" className="border-purple-300 text-purple-700">
+                <Button size="sm" variant="outline" className="border-blue-300 text-blue-700 hover:bg-blue-100">
+                  Add to Plan
+                </Button>
+              </div>
+            </div>
+
+            <div className="p-4 border border-orange-200 rounded-lg bg-orange-50">
+              <div className="flex items-start justify-between">
+                <div className="flex items-start space-x-3">
+                  <CloudRain className="w-5 h-5 text-orange-600 mt-0.5" />
+                  <div>
+                    <p className="font-medium text-orange-900">Backup Plan Ready</p>
+                    <p className="text-sm text-orange-700 mt-1">Rain forecast for Tuesday afternoon. I've prepared 3 indoor alternatives: Aquarium (30 min away), Children's Science Museum, or covered shopping district with family cafes.</p>
+                  </div>
+                </div>
+                <Button size="sm" variant="outline" className="border-orange-300 text-orange-700 hover:bg-orange-100">
+                  See Options
+                </Button>
+              </div>
+            </div>
+
+            <div className="p-4 border border-purple-200 rounded-lg bg-purple-50">
+              <div className="flex items-start justify-between">
+                <div className="flex items-start space-x-3">
+                  <AlertTriangle className="w-5 h-5 text-purple-600 mt-0.5" />
+                  <div>
+                    <p className="font-medium text-purple-900">Schedule Optimization</p>
+                    <p className="text-sm text-purple-700 mt-1">Jake's soccer interests + morning energy = perfect time for Santiago Bernabéu Stadium tour at 9 AM before crowds arrive.</p>
+                  </div>
+                </div>
+                <Button size="sm" variant="outline" className="border-purple-300 text-purple-700 hover:bg-purple-100">
                   Add to Itinerary
                 </Button>
               </div>
