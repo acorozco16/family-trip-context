@@ -1,9 +1,10 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Users, Calendar, Star, ArrowRight, Plane, Hotel, Car, Heart } from "lucide-react";
+import { MapPin, Users, Calendar, Star, ArrowRight, Plane, Hotel, Car, Heart, Brain, Shield, Share2 } from "lucide-react";
 import { FamLogo } from "@/components/ui/fam-logo";
 
 const Index = () => {
@@ -38,25 +39,35 @@ const Index = () => {
       <section className="container mx-auto px-6 py-16">
         <div className="text-center max-w-4xl mx-auto">
           <Badge className="mb-6 bg-blue-100 text-blue-700 hover:bg-blue-100">
-            Try First, Signup Later
+            AI-Powered Family Trip Assistant
           </Badge>
           <h1 className="text-5xl font-bold text-gray-900 mb-6 leading-tight">
-            Family Travel Planning
+            The Smart Way to Coordinate
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-orange-500">
-              Made Simple
+              Complex Family Trips
             </span>
           </h1>
-          <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-            Get AI-powered recommendations tailored to your family's unique needs. 
-            From kids' sleep schedules to travel preferences, we help you plan the perfect trip.
+          <p className="text-xl text-gray-600 mb-6 leading-relaxed">
+            Stop being the human travel database for your family. Let AI handle the complexity 
+            of coordinating grandparents, toddlers, and everyone's unique needs in one intelligent system.
           </p>
+          
+          {/* Social Proof Quote */}
+          <div className="bg-white/60 border border-blue-100 rounded-lg p-6 mb-8 italic text-gray-700">
+            <p className="text-lg">
+              "Finally, someone who understands that planning for grandparents AND toddlers 
+              requires different strategies! No more being the family travel encyclopedia."
+            </p>
+            <p className="text-sm text-gray-500 mt-2">— Sarah M., Mom of 3 coordinating 12-person family trips</p>
+          </div>
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button 
               size="lg" 
               onClick={() => navigate("/trip-creator")}
               className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg"
             >
-              Plan Your Trip
+              Get Your AI Assistant
               <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
             <Button 
@@ -65,9 +76,53 @@ const Index = () => {
               onClick={() => navigate("/dashboard")}
               className="border-blue-200 text-blue-600 hover:bg-blue-50 px-8 py-4 text-lg"
             >
-              See Demo Dashboard
+              See It In Action
             </Button>
           </div>
+        </div>
+      </section>
+
+      {/* Pain Points Section */}
+      <section className="container mx-auto px-6 py-16 bg-white/30 rounded-2xl mx-6 mb-16">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            You Shouldn't Be the Family Travel Database
+          </h2>
+          <p className="text-lg text-gray-600">
+            Multi-generational trips are complex. Let AI handle the mental load.
+          </p>
+        </div>
+        
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <Card className="border-red-100 bg-red-50/50">
+            <CardHeader>
+              <CardTitle className="text-lg text-red-800">The Overwhelm</CardTitle>
+              <CardDescription className="text-red-600">
+                Remembering grandpa's mobility needs, the kids' nap schedules, everyone's dietary restrictions, 
+                and who's arriving when... it's exhausting being the coordinator.
+              </CardDescription>
+            </CardHeader>
+          </Card>
+
+          <Card className="border-orange-100 bg-orange-50/50">
+            <CardHeader>
+              <CardTitle className="text-lg text-orange-800">The Complexity</CardTitle>
+              <CardDescription className="text-orange-600">
+                Multi-generational trips mean juggling accessibility, entertainment for different ages, 
+                varying budgets, and completely different travel styles all at once.
+              </CardDescription>
+            </CardHeader>
+          </Card>
+
+          <Card className="border-blue-100 bg-blue-50/50">
+            <CardHeader>
+              <CardTitle className="text-lg text-blue-800">The Solution</CardTitle>
+              <CardDescription className="text-blue-600">
+                Family-aware AI that remembers everyone's needs, suggests age-appropriate activities, 
+                and keeps the whole family coordinated without you doing all the mental work.
+              </CardDescription>
+            </CardHeader>
+          </Card>
         </div>
       </section>
 
@@ -75,10 +130,10 @@ const Index = () => {
       <section className="container mx-auto px-6 py-16">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Everything Your Family Needs
+            Intelligence That Understands Families
           </h2>
           <p className="text-lg text-gray-600">
-            Comprehensive trip planning that understands family dynamics
+            More than just trip planning — it's family coordination made effortless
           </p>
         </div>
         
@@ -86,11 +141,12 @@ const Index = () => {
           <Card className="border-blue-100 hover:shadow-lg transition-shadow">
             <CardHeader>
               <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                <Users className="w-6 h-6 text-blue-600" />
+                <Brain className="w-6 h-6 text-blue-600" />
               </div>
-              <CardTitle className="text-xl">Family Profiles</CardTitle>
+              <CardTitle className="text-xl">Family-Aware AI</CardTitle>
               <CardDescription>
-                Capture each family member's needs, from sleep schedules to dietary restrictions
+                Remembers each person's needs, preferences, and limitations. From wheelchair accessibility 
+                to toddler-friendly restaurants — it knows your family.
               </CardDescription>
             </CardHeader>
           </Card>
@@ -98,11 +154,12 @@ const Index = () => {
           <Card className="border-orange-100 hover:shadow-lg transition-shadow">
             <CardHeader>
               <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-4">
-                <MapPin className="w-6 h-6 text-orange-600" />
+                <Shield className="w-6 h-6 text-orange-600" />
               </div>
-              <CardTitle className="text-xl">Smart Recommendations</CardTitle>
+              <CardTitle className="text-xl">Multi-Gen Smart Suggestions</CardTitle>
               <CardDescription>
-                AI-powered suggestions based on your family's unique travel style and concerns
+                Activities that work for grandparents AND kids. Restaurants with high chairs AND senior discounts. 
+                Intelligence that gets the complexity.
               </CardDescription>
             </CardHeader>
           </Card>
@@ -110,11 +167,12 @@ const Index = () => {
           <Card className="border-green-100 hover:shadow-lg transition-shadow">
             <CardHeader>
               <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
-                <Calendar className="w-6 h-6 text-green-600" />
+                <Share2 className="w-6 h-6 text-green-600" />
               </div>
-              <CardTitle className="text-xl">Complete Booking</CardTitle>
+              <CardTitle className="text-xl">Effortless Family Sharing</CardTitle>
               <CardDescription>
-                Flights, hotels, transport, and activities - all organized in one collaborative space
+                Everyone stays updated automatically. No more group text chaos or being the information hub. 
+                Real-time coordination that just works.
               </CardDescription>
             </CardHeader>
           </Card>
@@ -125,10 +183,10 @@ const Index = () => {
       <section className="container mx-auto px-6 py-16 bg-white/50 rounded-2xl mx-6">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            See Fam in Action
+            See Your AI Assistant in Action
           </h2>
           <p className="text-lg text-gray-600">
-            Explore our Barcelona family trip demo
+            Watch how Fam handles a real 3-generation Barcelona trip
           </p>
         </div>
 
@@ -139,21 +197,21 @@ const Index = () => {
               onClick={() => setActiveDemo("onboarding")}
               size="sm"
             >
-              Onboarding Flow
+              Quick Setup
             </Button>
             <Button
               variant={activeDemo === "trip-creator" ? "default" : "outline"}
               onClick={() => setActiveDemo("trip-creator")}
               size="sm"
             >
-              Trip Creator
+              AI Trip Builder
             </Button>
             <Button
               variant={activeDemo === "dashboard" ? "default" : "outline"}
               onClick={() => setActiveDemo("dashboard")}
               size="sm"
             >
-              Operations Dashboard
+              Family Coordination Hub
             </Button>
           </div>
 
@@ -162,10 +220,10 @@ const Index = () => {
               <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Heart className="w-8 h-8 text-blue-600" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">Quick Start Experience</h3>
-              <p className="text-gray-600 mb-4">Land → Quick Tour → Start Planning → Welcome</p>
+              <h3 className="text-xl font-semibold mb-2">From Overwhelmed to Organized in Minutes</h3>
+              <p className="text-gray-600 mb-4">Quick family profiling → AI learns your dynamics → Instant coordination</p>
               <Button onClick={() => navigate("/trip-creator")} className="bg-blue-600 hover:bg-blue-700">
-                Try Onboarding
+                Try Quick Setup
               </Button>
             </div>
           )}
@@ -174,7 +232,7 @@ const Index = () => {
             <div className="text-center py-8">
               <div className="flex justify-center space-x-4 mb-6">
                 <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
-                  <MapPin className="w-6 h-6 text-orange-600" />
+                  <Brain className="w-6 h-6 text-orange-600" />
                 </div>
                 <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
                   <Users className="w-6 h-6 text-green-600" />
@@ -183,10 +241,10 @@ const Index = () => {
                   <Star className="w-6 h-6 text-purple-600" />
                 </div>
               </div>
-              <h3 className="text-xl font-semibold mb-2">6-Step Trip Builder</h3>
-              <p className="text-gray-600 mb-4">Destination → Kids → Style → Concerns → Budget → Bookings</p>
+              <h3 className="text-xl font-semibold mb-2">AI That Gets Multi-Generational Complexity</h3>
+              <p className="text-gray-600 mb-4">Family profiles → Smart suggestions → Conflict-free itineraries</p>
               <Button onClick={() => navigate("/trip-creator")} className="bg-orange-600 hover:bg-orange-700">
-                Start Trip Creator
+                See AI Trip Builder
               </Button>
             </div>
           )}
@@ -195,19 +253,19 @@ const Index = () => {
             <div className="text-center py-8">
               <div className="flex justify-center space-x-4 mb-6">
                 <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                  <Plane className="w-6 h-6 text-blue-600" />
+                  <Share2 className="w-6 h-6 text-blue-600" />
                 </div>
                 <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                  <Hotel className="w-6 h-6 text-green-600" />
+                  <Shield className="w-6 h-6 text-green-600" />
                 </div>
                 <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
-                  <Car className="w-6 h-6 text-purple-600" />
+                  <Calendar className="w-6 h-6 text-purple-600" />
                 </div>
               </div>
-              <h3 className="text-xl font-semibold mb-2">Live Collaboration Dashboard</h3>
-              <p className="text-gray-600 mb-4">Real-time updates, bookings, and family coordination</p>
+              <h3 className="text-xl font-semibold mb-2">No More Being the Family Information Hub</h3>
+              <p className="text-gray-600 mb-4">Automatic updates, smart reminders, effortless coordination</p>
               <Button onClick={() => navigate("/dashboard")} className="bg-green-600 hover:bg-green-700">
-                View Dashboard
+                View Coordination Hub
               </Button>
             </div>
           )}
@@ -218,17 +276,17 @@ const Index = () => {
       <section className="container mx-auto px-6 py-16 text-center">
         <div className="max-w-2xl mx-auto">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Ready to Plan Your Family Adventure?
+            Ready to Stop Being the Family Travel Database?
           </h2>
           <p className="text-lg text-gray-600 mb-8">
-            Join families who've discovered stress-free travel planning with Fam
+            Let AI handle the complexity while you enjoy planning again
           </p>
           <Button 
             size="lg" 
             onClick={() => navigate("/trip-creator")}
             className="bg-gradient-to-r from-blue-600 to-orange-500 hover:from-blue-700 hover:to-orange-600 text-white px-8 py-4 text-lg"
           >
-            Start Your Free Trip
+            Get Your AI Assistant Now
             <ArrowRight className="ml-2 w-5 h-5" />
           </Button>
         </div>
@@ -240,7 +298,7 @@ const Index = () => {
           <div className="flex items-center justify-between">
             <FamLogo size="sm" />
             <p className="text-sm text-gray-600">
-              Making family travel planning delightful, one trip at a time
+              Finally, an AI that understands family trip complexity
             </p>
           </div>
         </div>
