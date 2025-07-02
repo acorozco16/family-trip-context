@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Plane, Hotel, Car, Train, Phone, MapPin, Calendar, Users, CheckCircle } from "lucide-react";
+import { Plane, Hotel, Car, Train, Phone, MapPin, Calendar, Users, CheckCircle, Upload, FileText, Copy } from "lucide-react";
 
 interface BookingsStepProps {
   onNext: () => void;
@@ -48,6 +48,22 @@ export const BookingsStep = ({ onNext, tripData, setTripData }: BookingsStepProp
   };
 
   const familyMembers = getFamilyMembers();
+
+  // Quick Import handlers
+  const handleEmailScreenshots = () => {
+    // TODO: Implement email screenshots upload
+    console.log("Email screenshots upload");
+  };
+
+  const handleCalendarImport = () => {
+    // TODO: Implement Google Calendar import
+    console.log("Calendar import");
+  };
+
+  const handleCopyPaste = () => {
+    // TODO: Implement copy & paste confirmation text
+    console.log("Copy & paste");
+  };
 
   const addFlight = () => {
     setBookings({
@@ -216,6 +232,73 @@ export const BookingsStep = ({ onNext, tripData, setTripData }: BookingsStepProp
         <p className="text-lg text-gray-600">
           Add your flight, accommodation, and transport details
         </p>
+      </div>
+
+      {/* Quick Import Options */}
+      <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
+        <CardHeader>
+          <CardTitle className="text-xl text-center">Quick Import Options</CardTitle>
+          <CardDescription className="text-center">
+            Already have your bookings? Import them quickly with these shortcuts
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid md:grid-cols-3 gap-4">
+            <Card className="cursor-pointer hover:shadow-md transition-shadow border-2 border-transparent hover:border-blue-200" onClick={handleEmailScreenshots}>
+              <CardContent className="p-6 text-center">
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Upload className="w-6 h-6 text-blue-600" />
+                </div>
+                <h3 className="font-semibold mb-2">Email Screenshots</h3>
+                <p className="text-sm text-gray-600 mb-4">
+                  Upload confirmation emails or screenshots from your phone
+                </p>
+                <Button variant="outline" size="sm" className="w-full">
+                  Upload Images
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="cursor-pointer hover:shadow-md transition-shadow border-2 border-transparent hover:border-green-200" onClick={handleCalendarImport}>
+              <CardContent className="p-6 text-center">
+                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Calendar className="w-6 h-6 text-green-600" />
+                </div>
+                <h3 className="font-semibold mb-2">Calendar Import</h3>
+                <p className="text-sm text-gray-600 mb-4">
+                  Import existing bookings from Google Calendar or iCal
+                </p>
+                <Button variant="outline" size="sm" className="w-full">
+                  Connect Calendar
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="cursor-pointer hover:shadow-md transition-shadow border-2 border-transparent hover:border-purple-200" onClick={handleCopyPaste}>
+              <CardContent className="p-6 text-center">
+                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Copy className="w-6 h-6 text-purple-600" />
+                </div>
+                <h3 className="font-semibold mb-2">Copy & Paste</h3>
+                <p className="text-sm text-gray-600 mb-4">
+                  Paste confirmation details and let AI extract the info
+                </p>
+                <Button variant="outline" size="sm" className="w-full">
+                  Paste Details
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </CardContent>
+      </Card>
+
+      <div className="relative">
+        <div className="absolute inset-0 flex items-center">
+          <span className="w-full border-t border-gray-200" />
+        </div>
+        <div className="relative flex justify-center text-sm">
+          <span className="px-4 bg-white text-gray-500">Or add manually</span>
+        </div>
       </div>
 
       <Tabs defaultValue="flights" className="space-y-6">
