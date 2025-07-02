@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Calendar, Users } from "lucide-react";
+import { MapPin, Calendar, Users, LayoutDashboard } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface TripOverviewProps {
@@ -38,9 +38,15 @@ const TripOverview = ({ trip }: TripOverviewProps) => {
             </Badge>
           </div>
         </div>
-        <Button variant="outline" onClick={() => navigate("/")}>
-          Back to Home
-        </Button>
+        <div className="flex items-center space-x-3">
+          <Button variant="outline" onClick={() => navigate("/dashboard")}>
+            <LayoutDashboard className="w-4 h-4 mr-2" />
+            Back to Dashboard
+          </Button>
+          <Button variant="outline" onClick={() => navigate("/")}>
+            Back to Home
+          </Button>
+        </div>
       </div>
     </div>
   );
