@@ -1,10 +1,9 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Clock, MapPin, Users, Star, Sparkles, AlertTriangle, CheckCircle, CloudRain } from "lucide-react";
+import { Clock, MapPin, Users, Star, Sparkles, AlertTriangle, CheckCircle, CloudRain, Share, Calendar, MessageCircle, Link2, Trophy } from "lucide-react";
 import AddActivityModal from "./AddActivityModal";
 
 interface Activity {
@@ -39,6 +38,51 @@ const ItineraryTab = ({ activities: initialActivities }: ItineraryTabProps) => {
     navigate(`/activity/${activityId}`);
   };
 
+  const handleWhatsAppShare = () => {
+    const message = `🎉 Our family trip itinerary is ready! 
+
+📅 ${Object.keys(groupedActivities).length} amazing days planned
+🎯 ${activities.length} activities coordinated
+👨‍👩‍👧‍👦 Perfect for our whole family
+
+Check it out: [Family Trip Link]
+
+Can't wait to make memories together! ✈️`;
+    
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
+  const handleCalendarExport = () => {
+    // Generate ICS file content
+    const icsContent = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//FamApp//Family Trip Itinerary//EN
+${activities.map(activity => `
+BEGIN:VEVENT
+SUMMARY:${activity.name}
+DTSTART:${activity.date.replace(/-/g, '')}T${activity.time?.replace(':', '') || '0900'}00
+LOCATION:${activity.location || ''}
+DESCRIPTION:${activity.aiInsight || ''}
+END:VEVENT`).join('')}
+END:VCALENDAR`;
+    
+    const blob = new Blob([icsContent], { type: 'text/calendar' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'family-trip-itinerary.ics';
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleFamilyLinkShare = () => {
+    const shareUrl = `${window.location.origin}/trip`;
+    navigator.clipboard.writeText(shareUrl);
+    // You could add a toast notification here
+    console.log('Family link copied to clipboard:', shareUrl);
+  };
+
   // Group activities by date
   const groupedActivities = activities.reduce((acc, activity) => {
     const date = activity.date;
@@ -64,6 +108,76 @@ const ItineraryTab = ({ activities: initialActivities }: ItineraryTabProps) => {
 
   return (
     <div className="space-y-6">
+      {/* Share Your Masterpiece Section */}
+      <Card className="bg-gradient-to-br from-purple-50 to-blue-50 border-purple-200">
+        <CardHeader>
+          <CardTitle className="flex items-center text-purple-900">
+            <Trophy className="w-5 h-5 text-purple-600 mr-2" />
+            Share Your Masterpiece
+          </CardTitle>
+          <CardDescription className="text-purple-700">
+            You did the hard work planning this amazing trip - now get everyone on the same page instantly!
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="p-4 bg-white rounded-lg border border-green-200 hover:shadow-md transition-shadow cursor-pointer">
+              <div className="flex items-center mb-3">
+                <MessageCircle className="w-5 h-5 text-green-600 mr-2" />
+                <h4 className="font-medium text-green-900">WhatsApp Family Group</h4>
+              </div>
+              <p className="text-sm text-green-700 mb-4">
+                Send a beautifully formatted message with all the key details to your family group chat.
+              </p>
+              <Button 
+                onClick={handleWhatsAppShare}
+                size="sm" 
+                className="w-full bg-green-600 hover:bg-green-700"
+              >
+                Share to WhatsApp
+              </Button>
+            </div>
+
+            <div className="p-4 bg-white rounded-lg border border-blue-200 hover:shadow-md transition-shadow cursor-pointer">
+              <div className="flex items-center mb-3">
+                <Calendar className="w-5 h-5 text-blue-600 mr-2" />
+                <h4 className="font-medium text-blue-900">Everyone's Calendars</h4>
+              </div>
+              <p className="text-sm text-blue-700 mb-4">
+                Export as calendar file that everyone can import into their phones and computers.
+              </p>
+              <Button 
+                onClick={handleCalendarExport}
+                size="sm" 
+                variant="outline" 
+                className="w-full border-blue-300 text-blue-700 hover:bg-blue-50"
+              >
+                Download ICS File
+              </Button>
+            </div>
+
+            <div className="p-4 bg-white rounded-lg border border-purple-200 hover:shadow-md transition-shadow cursor-pointer">
+              <div className="flex items-center mb-3">
+                <Link2 className="w-5 h-5 text-purple-600 mr-2" />
+                <h4 className="font-medium text-purple-900">Family-Friendly Link</h4>
+              </div>
+              <p className="text-sm text-purple-700 mb-4">
+                One simple link that works on any device - no apps or downloads needed.
+              </p>
+              <Button 
+                onClick={handleFamilyLinkShare}
+                size="sm" 
+                variant="outline" 
+                className="w-full border-purple-300 text-purple-700 hover:bg-purple-50"
+              >
+                Copy Link
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Existing AI-Optimized Family Itinerary Card */}
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
@@ -164,6 +278,7 @@ const ItineraryTab = ({ activities: initialActivities }: ItineraryTabProps) => {
         </CardContent>
       </Card>
       
+      {/* Existing Smart Coordinator Assistance Card */}
       <Card>
         <CardHeader>
           <CardTitle className="text-lg flex items-center">
